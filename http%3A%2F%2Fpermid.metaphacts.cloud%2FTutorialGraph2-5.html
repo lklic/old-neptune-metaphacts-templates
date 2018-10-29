@@ -1,0 +1,44 @@
+<bs-panel header='All information about the location of Netflix Inc.'>
+    <semantic-graph 
+                    query='
+                      CONSTRUCT {
+                        <https://permid.org/1-4295902158> a organization:Organization .
+                        <https://permid.org/1-4295902158> vcard:organization-name ?organizationName.
+                        <https://permid.org/1-4295902158> organization:hasRegisteredPhoneNumber ?phoneNumber.
+                        <https://permid.org/1-4295902158> organization:isIncorporatedIn ?isIncorporatedIn.
+                        <https://permid.org/1-4295902158> fibo:isDomiciledIn ?location.
+                        <https://permid.org/1-4295902158> organization:hasLEI ?legalEntityNumber.
+                        ?location ?property ?nodes.
+
+                      } WHERE {
+                        <https://permid.org/1-4295902158> a organization:Organization .
+                        <https://permid.org/1-4295902158> vcard:organization-name ?organizationName.
+                        <https://permid.org/1-4295902158> organization:hasRegisteredPhoneNumber ?phoneNumber.
+                        <https://permid.org/1-4295902158> organization:isIncorporatedIn ?isIncorporatedIn.
+                        <https://permid.org/1-4295902158> fibo:isDomiciledIn ?location.
+                        <https://permid.org/1-4295902158> organization:hasLEI ?legalEntityNumber.
+                        { 
+                          SELECT (sample(?l) AS ?location) ?property (SAMPLE(?n) as ?nodes) {
+                            <https://permid.org/1-4295902158> fibo:isDomiciledIn ?l.
+                            ?l ?property ?n.
+                          } GROUP BY ?property LIMIT 20
+                        }
+                      }
+                    '
+                    open-links-in-new-window=true
+                    hide-predicates='["<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>"]'
+                    graph-style='[ {
+                                      "selector": "edge[source = iri(<http://sws.geonames.org/6252001/>)]",
+                                      "style": {
+                                        "line-color": "#0087A1",
+                                        "font-size": "12"
+                                       }
+                                   },
+                                   [[> permid:TutorialGraphStyle]],
+                                   [[> permid:GraphStyle]] 
+                                 ]'
+    >
+      <semantic-graph-extension-panzoom zoom-only=true></semantic-graph-extension-panzoom>
+      <semantic-graph-layout-cose-bilkent ideal-edge-length="170"></semantic-graph-layout-cose-bilkent>
+    </semantic-graph>
+</bs-panel>

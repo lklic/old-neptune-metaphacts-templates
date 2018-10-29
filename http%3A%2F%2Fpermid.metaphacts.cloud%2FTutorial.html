@@ -1,0 +1,742 @@
+<style>
+  .material-design-theme .panel-default > .panel-heading {
+    background-color: #F9FAFC;
+  }
+
+  .component-page-toolbar{
+    display: none;
+  }
+
+</style>
+
+<ol class="page-breadcrumb">
+  <li>
+    <mp-link title="Home" url="/">Home</mp-link>
+  </li>
+  <li class="active">Tutorial - Getting Started</li>
+</ol>
+
+[[#*inline "IconSection"]]
+  <bs-panel>
+    <div data-flex-layout='row top-left'>
+      <img src='[[icon]]' style='height: 80px; filter: opacity(0.2);' />
+      <div data-flex-self='size-x1' style="margin-left: 15px;">
+        <h6 style="margin-top: 0;">[[title]]</h6>
+        [[> @partial-block ]]
+      </div>
+    </div>
+  </bs-panel>
+[[/inline]]
+
+[[#*inline "CheckSection"]]
+  <div class='well' data-flex-layout='column center-center'>
+    <div style="box-shadow: 0 4px 9px 0 #dfe3ec;border-radius: 50%;height: 60px;width: 60px;display: flex;align-items: center;justify-content: center;">
+      [[> @partial-block ]]
+    </div>
+    <span style="font-weight: bold;">[[message]]</span>
+  </div>
+[[/inline]]
+
+[[#*inline "HeaderStripe"]]
+  <div style='[[position]] position: absolute; width: 684px; height: 148px; opacity: 0.4; background-image: linear-gradient(to left, rgba(255, 255, 255, 0), #e9ecf3);'> </div>
+[[/inline]]
+
+[[#*inline "LinkSection"]]
+<bs-panel style='margin-right: 20px;'>
+  <h4>[[header]]</h4>
+  [[> @partial-block ]]
+  <semantic-link open-in-new-window=true uri='[[link]]'>Link</semantic-link>
+</bs-panel>
+[[/inline]]
+
+[[#*inline "LinkOutsideSection"]]
+<bs-panel style='margin-right: 20px;'>
+  <h4>[[header]]</h4>
+  [[> @partial-block ]]
+  <a href='[[link]]' target="_blank">Link</a>
+</bs-panel>
+[[/inline]]
+<div class="page page-help material-design-theme">
+  <div class='page__header' style='padding: 0;'>
+    <div class='page__header-body' style='width: 100%; postion: relative; overflow: hidden;'>
+      [[> HeaderStripe position="top: -130px; right: 0;"]]
+      [[> HeaderStripe position="top: 15px; left: 30%;"]]
+      [[> HeaderStripe position="top: 165px; left: 0%;"]]
+      <bs-row style='padding-left: 85px; padding-right: 85px;'>
+        <bs-col xs-offset=2 xs=10>
+          <h1>Getting Started with SPARQL on Amazon Neptune</h1>
+          <div data-flex-layout='row center-left'>
+            <div data-flex-layout='row center-center' style='width: auto;'>
+              <i class="fa fa-2x fa-clock-o" aria-hidden="true"></i>
+              <span style="margin-left: 8px;">approx. 30 min</span>
+            </div>
+            <div data-flex-layout='row center-center' style="width: auto; margin-left: 40px;">
+              <i class="fa fa-2x fa-user" aria-hidden="true"></i>
+              <span style="margin-left: 8px;">Beginner</span>
+            </div>
+          </div>
+        </bs-col>
+      </bs-row>
+    </div>
+  </div>
+  <div class='page__body--borderless' style='padding-left: 85px; padding-right: 85px;'>
+    <bs-row>
+      <bs-col xs=2>
+        <div class="affix" style='width: 13%; top: 140px;'>
+          <bs-panel>
+            <h6>6 Steps Tutorial</h6>
+            <ol style="padding-left: 19px;">
+              <li>
+            <mp-anchor to="#exploration" animate='{"offset": -100}'>Exploring</mp-anchor><br/>
+              </li>
+              <li>
+            <mp-anchor to="#querying-data" animate='{"offset": -100}'>Querying</mp-anchor><br/>
+              </li>
+              <li>
+            <mp-anchor to="#querying-dataintegration" animate='{"offset": -100}'>Querying Across Datasets</mp-anchor><br/>
+              </li>
+              <li>
+            <mp-anchor to="#visualization" animate='{"offset": -100}'>Visualizing</mp-anchor><br/>
+              </li>
+      <!--  <mp-anchor to="#simple-search" animate='{"offset": -100}'>Creating a simple search interface</mp-anchor><br/> -->
+      <!--  <mp-anchor to="#creating-a-template" animate='{"offset": -100}'>Creating a template</mp-anchor><br/> -->
+              <li>
+            <mp-anchor to="#authoring" animate='{"offset": -100}'>Authoring</mp-anchor><br/>
+              </li>
+							<li>
+	            <mp-anchor to="#catalog" animate='{"offset": -100}'>Query Catalog</mp-anchor><br/>
+              </li>
+              </ol>
+          </bs-panel>
+        </div>
+      </bs-col>
+      <bs-col xs=10>
+        <h2>What you are going to learn in this tutorial</h2>
+        [[#> IconSection icon="/images/icons/thenounproject/np_compass_642740_000000.png" title="Graph Exploration"]]
+        <mp-anchor to="#exploration" animate='{"offset": -100}'>Exploring the data graph</mp-anchor>
+        [[/ IconSection]]        
+        [[#> IconSection icon="/images/icons/thenounproject/np_database_1018975_000000.png" title="Data Querying"]]
+        <mp-anchor to="#querying-data" animate='{"offset": -100}'>Querying graph data with SPARQL</mp-anchor>
+        [[/ IconSection]]
+        [[#> IconSection icon="/images/icons/thenounproject/np_nodes_625256_000000.png" title="Querying across Datasets"]]
+        <mp-anchor to="#querying-dataintegration" animate='{"offset": -100}'>Querying across datasets with SPARQL</mp-anchor>
+        [[/ IconSection]]
+        [[#> IconSection icon="/images/icons/thenounproject/np_graph_1153645_000000.png" title="Visualization"]]
+          <mp-anchor to="#visualization" animate='{"offset": -100}'>Visualizing SPARQL query results</mp-anchor>
+        [[/ IconSection]]
+[[!--        [[#> IconSection icon="icons-noun_950831" title="Search"]]
+          <mp-anchor to="#simple-search" animate='{"offset": -100}'>Creating a simple search interface</mp-anchor>
+        [[/ IconSection]] --]]
+        [[#> IconSection icon="/images/icons/thenounproject/np_pencil_1359768_000000.png" title="Authoring"]]
+[[!--      <mp-anchor to="#creating-a-template" animate='{"offset": -100}'>Creating a template</mp-anchor><br/> --]]
+           <mp-anchor to="#authoring" animate='{"offset": -100}'>Authoring RDF graph data</mp-anchor><br/>  
+        [[/ IconSection]]
+        
+<section id="exploration">
+        <h2>Step 1&nbsp;&nbsp;Exploration</h2>
+  <bs-row>
+    <bs-col xs=6>
+      <p> 
+         The scenario of this tutorial is about organizations, related persons, and places (called geographical features). There is information about the organizations and their relations to persons, who hold positions in these organizations. An organization is linked to a location, which carries information such as latitude and longitude. 
+      </p>
+     <!-- <p>This tutorial provides a preview on one of the key strengths of the underlying RDF data model, namely seamless data integration with other datasets. Here, some of the organizations are linked to entities as represented in Wikidata, while the locations (called geographical features) are provided by the GeoNames dataset.
+      </p> -->
+      <p>
+         This tutorial uses the Open PermID Dataset and extensions from Wikidata and GeoNames.
+      </p>        
+      
+          </bs-col>
+          <bs-col xs=6>
+            [[> permid:PermIDGraph]]            
+          </bs-col>
+        </bs-row>
+      <h3>1.1 EXERCISE - Exploring the data graph</h3>
+<b>Your task is to familiarize yourself with the scenario and the data graph. Just click on the concepts in the above right graph or on the sample organizations and persons in the table below to start exploring the data graph. You can follow links and click nodes in the graph views to browse through the data graph.</b><br/> <br/>
+	<p>
+   You may also use the <semantic-link open-in-new-window=true  uri="[[resolvePrefix ":PermIDSearch"]]">simple keyword search</semantic-link> to search for organizations.
+  </p>
+   	<bs-row> 
+      <bs-col md=6>
+        <h5>Example AWS Reference Customers</h5>
+        <semantic-table query='SELECT ?orga WHERE { 
+  																		?aws <http://aws.amazon.com/vocabulary/hasReferenceCustomer>  ?orga .
+																}'
+				    number-of-displayed-rows="10"
+   			 		options='{"showFilter": false, "showTableHeading": false}'
+            column-configuration='[
+             {"displayName": "Organization", "cellTemplate": "<semantic-link uri=\"{{orga.value}}\" open-in-new-window=true></semantic-link>"}
+            ]'
+        >
+        </semantic-table>
+      </bs-col>
+      <bs-col md=6>
+        <h5>Example Persons in these Organizations</h5>
+        <semantic-table query='SELECT DISTINCT ?person ?orga WHERE {
+  																						?aws <http://aws.amazon.com/vocabulary/hasReferenceCustomer>  ?orga.
+  																						?person a <http://permid.org/ontology/person/Person>.
+                                              ?person common:hasPublicationStatus common:publicationstatuspublished .
+                                              ?person ^<http://permid.org/ontology/person/hasHolder>/<http://permid.org/ontology/person/isPositionIn> ?orga
+																							}'
+				    number-of-displayed-rows="10"
+   			 		options='{"showFilter": false, "showTableHeading": false}'
+            column-configuration='[
+             {"displayName": "Person", "cellTemplate": "<semantic-link uri=\"{{person.value}}\" open-in-new-window=true></semantic-link>"},
+             {"displayName": "Organization", "cellTemplate": "<semantic-link uri=\"{{orga.value}}\" open-in-new-window=true></semantic-link>"}
+            ]'                
+        >
+        </semantic-table>
+      </bs-col>
+ 	</bs-row>      
+
+  </section>   
+
+        
+	<section id="querying-data">
+      <h2>Step 2&nbsp;&nbsp;Querying with SPARQL </h2>
+			Let's start with querying the graph.
+      
+			<h3>2.1 SELECT all outgoing properties of a node</h3>
+  	  <p>
+        We start out with one node in the graph, for example, the node representing <b>Netflix Inc</b>. The node <b>Netflix Inc</b> is uniquely identified by the  identifier <semantic-link open-in-new-window=true uri="https://permid.org/1-4295902158">&lt;https://permid.org/1-4295902158&gt;</semantic-link>. 
+      As a first step, we want to query all outgoing properties and nodes from the Netflix Inc node. We achieve this with the following query:
+      </p>
+      <mp-code-block mode='application/sparql-query'>
+<![CDATA[
+SELECT ?property ?node WHERE {
+  <https://permid.org/1-4295902158> ?property ?node .
+}
+]]>
+      </mp-code-block>
+      <p>
+        The above query consists of two parts - a <code mode='application/sparql-query'>SELECT</code> part listing all the variables whose values should be returned and a <code mode='application/sparql-query'>WHERE</code> part which specifies a graph pattern. All data matching the graph pattern are results of this query. Here, the above query returns a list of all properties and nodes, which are connected to <semantic-link open-in-new-window=true uri="https://permid.org/1-4295902158">&lt;https://permid.org/1-4295902158&gt;</semantic-link> .
+      </p>
+			<h3>2.2 SELECT all incoming properties of a node</h3>
+      <p>
+      Above we selected the <i>outgoing</i> properties of the node <semantic-link open-in-new-window=true uri="https://permid.org/1-4295902158">&lt;https://permid.org/1-4295902158&gt;</semantic-link>. In order to select the <i>incoming</i> properties, we just change the order and move the node <semantic-link open-in-new-window=true uri="https://permid.org/1-4295902158">&lt;https://permid.org/1-4295902158&gt;</semantic-link> to the object position:
+      </p>
+      
+      <mp-code-block mode='application/sparql-query'>
+<![CDATA[
+SELECT ?node ?property WHERE {
+  ?node ?property <https://permid.org/1-4295902158> .
+}
+]]>
+      </mp-code-block>
+
+      <h3>2.3 SELECT specific properties</h3>
+      <p>
+    	We want to select only specific properties and not all. For example, we want to select the name, the phone number, the place of incorporation and the location of Netflix Inc. We are interested in the data shown below.
+    </p>  
+     [[> permid:TutorialGraph2-3]]
+        
+        
+       <br />
+       <p> You see one pattern for each property in the <code mode='application/sparql-query'>WHERE</code> part of the query below. Each pattern is completed with a final dot <code mode='application/sparql-query'>.</code> . Note also the <code mode='application/sparql-query'>*</code>&nbsp; in the <code mode='application/sparql-query'>SELECT</code> part. The asterisk is a shortcut for 'all variables' of the <code mode='application/sparql-query'>WHERE</code> part. Furthermore, we introduced prefixes. The prefixes allow us to have namespaces defined once at the top and then use abbreviations in the patterns.
+      <p/>
+      <mp-code-block mode='application/sparql-query'>
+<![CDATA[
+PREFIX fibo: <http://www.omg.org/spec/EDMC-FIBO/BE/LegalEntities/CorporateBodies/>
+PREFIX organization: <http://permid.org/ontology/organization/>
+PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
+        
+SELECT * WHERE { 
+  <https://permid.org/1-4295902158> vcard:organization-name ?organizationName .
+  <https://permid.org/1-4295902158> organization:hasRegisteredPhoneNumber ?phoneNumber .
+  <https://permid.org/1-4295902158> organization:isIncorporatedIn ?isIncorporatedIn .
+  <https://permid.org/1-4295902158> fibo:isDomiciledIn ?location.
+}
+]]>
+       </mp-code-block>
+
+    
+      <h3>2.4 EXERCISE - SELECT query </h3>
+      <p>
+		  The previous query in step 2.3 selected only some specific properties. One of the key strengths of RDF graphs is that the schema is fully queryable.
+      <p/>
+      <p>
+        <b>
+          <i>Your task is now to extend the query of previous step 2.3 and also select the <i>legal number</i> of Netflix. You find the property that you need in the result of query 2.1 and an illustration of the data that you want to select below.</i>
+        </b>
+              <br /> <br />    
+
+        [[> permid:TutorialGraph2-4 ]]
+        
+      </p>
+       
+      <div data-flex-layout="rows center-center" style='margin: 20px 0;' class='well'>
+          <a class='btn btn-lg btn-primary' target='_blank' href="/sparql?query=PREFIX fibo%3A <http%3A%2F%2Fwww.omg.org%2Fspec%2FEDMC-FIBO%2FBE%2FLegalEntities%2FCorporateBodies%2F>%0APREFIX organization%3A <http%3A%2F%2Fpermid.org%2Fontology%2Forganization%2F>%0APREFIX vcard%3A <http%3A%2F%2Fwww.w3.org%2F2006%2Fvcard%2Fns%23>%0ASELECT * WHERE {%0A  <https%3A%2F%2Fpermid.org%2F1-4295902158> vcard%3Aorganization-name %3ForganizationName.%0A  <https%3A%2F%2Fpermid.org%2F1-4295902158> organization%3AhasRegisteredPhoneNumber %3FphoneNumber.%0A  <https%3A%2F%2Fpermid.org%2F1-4295902158> organization%3AisIncorporatedIn %3FisIncorporatedIn.%0A  <https%3A%2F%2Fpermid.org%2F1-4295902158> fibo%3AisDomiciledIn %3Flocation.%0A}">
+            Start Exercise
+          </a>
+      </div>
+    
+      <bs-panel header="Solution (click to expand)"  collapsible="true">
+         <mp-code-block mode='application/sparql-query'>
+<![CDATA[
+PREFIX fibo: <http://www.omg.org/spec/EDMC-FIBO/BE/LegalEntities/CorporateBodies/>
+PREFIX organization: <http://permid.org/ontology/organization/>
+PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
+
+SELECT * WHERE { 
+  <https://permid.org/1-4295902158> vcard:organization-name ?organizationName .
+  <https://permid.org/1-4295902158> organization:hasRegisteredPhoneNumber ?phoneNumber .
+  <https://permid.org/1-4295902158> organization:isIncorporatedIn ?isIncorporatedIn .
+  <https://permid.org/1-4295902158> fibo:isDomiciledIn ?location.
+  <https://permid.org/1-4295902158> organization:hasLEI ?legalEntityNumber .
+}
+]]>
+         </mp-code-block>
+      </bs-panel>
+      
+      <h3>2.5 SELECT properties of a related node</h3>
+      <p>
+      So far, we have worked around one node and its direct neighborhood. Now, we want to go further in the graph. In the previous query, we select the <code mode='application/sparql-query'>?location</code>. But just the node about the location of Netflix alone is not very meaningful. We want to get more information about the location and therefore need to explore the properties of the <code mode='application/sparql-query'>?location</code>. What we want to achieve is to get all these properties as illustrated below.
+    </p>
+    
+         [[> permid:TutorialGraph2-5 ]]
+        
+        <p>
+        The query below matches the location and all outgoing properties of that location. Only the distinct properties are returned as results.
+      </p>
+     
+      <mp-code-block mode='application/sparql-query'>
+<![CDATA[
+PREFIX fibo: <http://www.omg.org/spec/EDMC-FIBO/BE/LegalEntities/CorporateBodies/>
+PREFIX organization: <http://permid.org/ontology/organization/>
+PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
+             
+SELECT DISTINCT ?property WHERE {
+  <https://permid.org/1-4295902158> vcard:organization-name ?organizationName .
+  <https://permid.org/1-4295902158> organization:hasRegisteredPhoneNumber ?phoneNumber .
+  <https://permid.org/1-4295902158> organization:isIncorporatedIn ?isIncorporatedIn .
+  <https://permid.org/1-4295902158> fibo:isDomiciledIn ?location.
+  ?location ?property ?nodes .
+}
+]]>
+   		</mp-code-block>
+			<br />
+      <p>  Amongst other properties, we got the latitude, longitude, and the country code of the location of Netflix Inc. Let's add them to our query:</p>
+      <mp-code-block mode='application/sparql-query'>
+<![CDATA[
+PREFIX wgs84: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+PREFIX fibo: <http://www.omg.org/spec/EDMC-FIBO/BE/LegalEntities/CorporateBodies/>
+PREFIX organization: <http://permid.org/ontology/organization/>
+PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
+PREFIX geo: <http://www.geonames.org/ontology#>
+
+SELECT * WHERE {
+  <https://permid.org/1-4295902158> vcard:organization-name ?organizationName .
+  <https://permid.org/1-4295902158> organization:hasRegisteredPhoneNumber ?phoneNumber .
+  <https://permid.org/1-4295902158> organization:isIncorporatedIn ?isIncorporatedIn .
+  <https://permid.org/1-4295902158> fibo:isDomiciledIn ?location.
+  ?location geo:countryCode ?countryCode . 
+  ?location wgs84:lat ?lat.
+	?location wgs84:long ?long.
+}
+]]>
+   		</mp-code-block>
+
+    
+    <h3>2.6 SELECT related nodes and their properties</h3>
+    	Let's traverse the graph and select related nodes and their properties. The following query selects 25 persons holding positions in companies that are reference customers of AWS. 
+    
+    <mp-overlay-dialog title="Graph" bs-size="lg" backdrop=true>
+      <mp-overlay-dialog-trigger><a href="javascript:;">Show data graph</a></mp-overlay-dialog-trigger>
+      <mp-overlay-dialog-content>
+        <div style='height: 90vh;'>
+          <mp-page-loader iri="http://permid.metaphacts.cloud/TutorialGraph2-6"></mp-page-loader>
+        </div>
+      </mp-overlay-dialog-content>
+    </mp-overlay-dialog>
+    
+      <mp-code-block mode='application/sparql-query'>
+<![CDATA[
+PREFIX person: <http://permid.org/ontology/person/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
+
+SELECT DISTINCT ?sampleReferenceCustomer ?referenceCustomerName ?holderName ?holderPosition ?holderTitle WHERE {
+  <https://permid.org/1-5038056692> <http://aws.amazon.com/vocabulary/hasReferenceCustomer> ?sampleReferenceCustomer .
+  ?sampleReferenceCustomer vcard:organization-name ?referenceCustomerName .
+  ?tenure person:isTenureIn ?sampleReferenceCustomer .
+  ?tenure person:hasHolder ?holder .
+  ?holder rdfs:label ?holderName .
+  ?holder person:holdsPosition ?holderPosition .
+  ?holderPosition person:hasReportedTitle ?holderTitle 
+} LIMIT 25
+]]>
+     	</mp-code-block>
+
+      <h3>2.7 CONSTRUCT a graph</h3>
+    	<p>
+        We have used only the <code mode='application/sparql-query'>SELECT</code> query form so far, which returns a table as result. Another SPARQL query form is <code mode='application/sparql-query'>CONSTRUCT</code>. <code mode='application/sparql-query'>CONSTRUCT</code> is a graph specific query form, which returns a graph as result. The resulting graph is returned as a list of triple, i.e. node-property-node statements. <code mode='application/sparql-query'>CONSTRUCT</code> allows you to "construct" a graph via a query. A simple <code mode='application/sparql-query'>CONSTRUCT</code> query has two parts. The first <code mode='application/sparql-query'>CONSTRUCT</code> part defines the shape of the graph to be created. It consists of triple patterns. The patterns are populated with the data that matches the patterns in the second <code mode='application/sparql-query'>WHERE</code>-part of the query. For simplicity reasons, the following query has only one pattern per part.
+        <br/>
+        <br />
+       If we want to construct a graph of AWS and some of its reference customers, then we can achieve this with the following query:<br />
+			<i>Please be aware that the result returned for the query below is a list of raw triples in the <a href="https://www.w3.org/TR/turtle/" target="_blank">'turtle syntax'</a>. In step 4, you will visualize the result and see the graph rendered as an interactive canvas.<br />
+      </i>     
+    	</p>
+          <mp-code-block mode='application/sparql-query'>
+<![CDATA[
+CONSTRUCT {
+  <https://permid.org/1-5038056692> <http://aws.amazon.com/vocabulary/hasReferenceCustomer> ?sampleReferenceCustomer .
+} WHERE {
+  <https://permid.org/1-5038056692> <http://aws.amazon.com/vocabulary/hasReferenceCustomer> ?sampleReferenceCustomer . 
+}
+]]>
+     	</mp-code-block>
+        
+        
+        
+      </section>
+        
+    <section id="querying-dataintegration">
+      <h2>Step 3&nbsp;&nbsp;Querying across datasets with SPARQL </h2>
+        <p>
+        Another advantages of the RDF data model and the query language SPARQL is that data integration and querying across datasets is easy. In fact you already did it in the previous step! When you queried the location of Netflix, you selected the location information from GeoNames and the organizational information about Netflix from the PermID dataset.
+      </p>
+      [[> permid:TutorialGraph3 ]]
+			<p>
+		    Have a look at the query again below and compare it to the abstract overview of the data above.
+        The Open PermID dataset contains organizations and their locations are linked to GeoNames.      
+      </p>
+      
+          <mp-code-block mode='application/sparql-query'>
+<![CDATA[
+PREFIX wgs84: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+PREFIX fibo: <http://www.omg.org/spec/EDMC-FIBO/BE/LegalEntities/CorporateBodies/>
+PREFIX organization: <http://permid.org/ontology/organization/>
+PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
+PREFIX geo: <http://www.geonames.org/ontology#>
+
+SELECT * WHERE {
+  <https://permid.org/1-4295902158> vcard:organization-name ?organizationName .
+  <https://permid.org/1-4295902158> organization:hasRegisteredPhoneNumber ?phoneNumber .
+  <https://permid.org/1-4295902158> organization:isIncorporatedIn ?isIncorporatedIn .
+  <https://permid.org/1-4295902158> fibo:isDomiciledIn ?location.
+  ?location geo:countryCode ?countryCode . 
+  ?location wgs84:lat ?lat.
+  ?location wgs84:long ?long.
+}
+]]>
+          </mp-code-block>
+
+    </section>
+    <h2>Step 4&nbsp;&nbsp;Visualizing SPARQL query results </h2>
+		<div class="alert alert-info"  style="font-size:1em;">
+      <p>
+        In the previous section, you have been querying the PermID graph loaded in <b>Amazon Neptune</b> using SPARQL.
+      </p>
+      <p>
+        Implementing the <a href="https://www.w3.org/TR/sparql11-query/" style="color: #3cb7d2;font-weight: 500;" target="_blank">SPARQL 1.1 Query Language</a> and the <a href="https://www.w3.org/TR/sparql11-protocol/" style="color: #3cb7d2;font-weight: 500;" target="_blank">SPARQL 1.1 Protocol</a>, <b>Amazon Neptune</b> provides an open and W3C standardized interface for querying graphs. The following section demonstrates the ease of building SPARQL driven visualizations and end-user interfaces ontop of <b>Amazon Neptune</b>.
+      </p>
+      <p>
+        Using the SPARQL 1.1 interface to <b>Amazon Neptune</b>, the <a href="https://metaphacts.com/amazon-neptune" style="color: #3cb7d2;font-weight: 500;" target="_blank">metaphactory</a> acts as a middleware and frontend providing a rich set of HTML5 components for application building and end-user interaction.
+      </p>
+    </div>
+
+    <section id="visualization">  
+      <h3>4.1 Show SPARQL query results as a tables</h3> 
+      <p>
+        The following HTML code renders the result of the query as a table. Click on "Result" to see the rendered table.
+      </p>
+      <mp-code-example>
+<![CDATA[
+<semantic-table 
+  query='
+    SELECT ?property ?node WHERE {
+  	  <https://permid.org/1-4295902158> ?property ?node .
+   }
+ '
+></semantic-table>
+]]>
+      </mp-code-example>
+			<p>
+      <!--If you want to have this table on its a new page. Go to a new page, e.g. <semantic-link uri="[[resolvePrefix ":MyNewTablePage"]]">MyNewTablePage</semantic-link> and edit the page by clicking on the Edit button ( <i class="fa fa-pencil"></i>) on the top right of the page. Copy and paste the component definition code from above into the page and click on the save button. -->
+      </p>
+    </section>
+
+    <section>
+      <h3>4.2 Show SPARQL query results as a graph</h3>
+      <p>	
+        Let’s visualize a graph showing the organiztion Netflix and persons working there. For visualizing a graph, we need a <code mode='application/sparql-query'>CONSTRUCT</code> query. A simple <code mode='application/sparql-query'>CONSTRUCT</code> query has two parts. The <code mode='application/sparql-query'>CONSTRUCT</code> part defines the shape of the graph to be shown and data matching the patterns in the <code mode='application/sparql-query'>WHERE</code> part provide the content of the graph. 
+      </p>
+      <mp-code-example>
+<![CDATA[
+<semantic-graph 
+  query='
+    PREFIX person: &lt;http://permid.org/ontology/person/&gt;
+		
+    CONSTRUCT {
+		  ?person person:worksAt <https://permid.org/1-4295902158>.
+    } WHERE {
+      ?position person:hasHolder ?person .
+  		?position person:isPositionIn <https://permid.org/1-4295902158> . 
+    }
+  '
+>  
+</semantic-graph>
+]]>
+	     </mp-code-example> 
+      <br />
+      <p>
+       And if we add some styling sugar, we get a nice graph representing the persons working at Netflix Inc. 
+      </p>
+      <semantic-graph query='
+					PREFIX person: &lt;http://permid.org/ontology/person/&gt;
+					CONSTRUCT {
+						?collaborator person:worksAt <https://permid.org/1-4295902158>.
+						?collaborator a person:Person.
+              }WHERE {
+               ?s2 person:hasHolder ?collaborator .
+  						 ?s2 person:isPositionIn <https://permid.org/1-4295902158> . 
+              }'
+            hide-predicates='["<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>"]'
+            graph-style='[
+              [[> permid:GraphStyle]]
+            ]'>  
+
+          <semantic-graph-extension-navigator style="height: 150px; width: 150px;"></semantic-graph-extension-navigator>
+          <semantic-graph-extension-panzoom pan-indicator-min-opacity="0.1"></semantic-graph-extension-panzoom>
+        </semantic-graph>
+    </section>  
+       
+    <section>
+      <h3>4.3 EXERCISE - Show query results as a table and as a graph.</h3>
+      <p>
+      <b>Your task is to visualize the results of the query of Step 2.6. Try to visualize it first as a table and second also as a graph. </b>
+      </p>  
+      <h4>4.3.1 Exercise - Show results as a table</h4> 
+      <div data-flex-layout="rows center-center" style='margin: 20px 0;' class='well'>
+          <a class='btn btn-lg btn-primary' target='_blank' href="/resource/permid:Tutorial-Exercise-4-3-1?action=edit">
+            Start Exercise
+          </a>
+      </div>
+      <bs-panel header="Solution 4.3.1 (click to expand)"  collapsible="true">
+        <a target="_blank" href="/resource/permid:Tutorial-Solution-Exercise-4-3-1">Solution of Exercise 4.3.1</a>
+      </bs-panel> 
+      <br />
+      <h4>4.3.2 Exercise - Show results as a graph</h4> 
+    	<p>
+	      <b>Note, a graph visualization needs a <code mode='application/sparql-query'>CONSTRUCT</code> query, not a <code mode='application/sparql-query'>SELECT</code> query. Hence, you need to rewrite the query into a <code mode='application/sparql-query'>CONSTRUCT</code> query for the graph visualization.
+        </b>
+      </p>
+      <div data-flex-layout="rows center-center" style='margin: 20px 0;' class='well'>
+          <a class='btn btn-lg btn-primary' target='_blank' href="/resource/permid:Tutorial-Exercise-4-3-2?action=edit">
+            Start Exercise
+          </a>
+      </div>
+      <bs-panel header="Solution 4.3.2 (click to expand)"  collapsible="true">
+        <a target="_blank" href="/resource/permid:Tutorial-Solution-Exercise-4-3-2">Solution of Exercise 4.3.2</a>
+      </bs-panel> 
+    </section>   
+        
+        
+        
+    <!--  
+    <section id="ontodia">
+      <h3> Data exploration with Ontodia </h3>
+      <p>	
+        The graph visualization allowed us to create a fixed graph.  
+        Now, we want to explore the data and create a new visualization from scratch. We use Ontodia, a component for diagram-based data exploration and visualization.  For this, go to a new page, e.g. <semantic-link uri="[[resolvePrefix ":Ontodia"]]">Ontodia</semantic-link>, and embed the following snippet:
+      </p>
+
+        <div class="documentation__example">
+           <pre><code>
+      <div style="height: 800px">
+      <ontodia image-iris='["http://schema.org/thumbnail"]'></ontodia>
+      </div>  
+          </code></pre>
+        </div>
+    </section>
+    -->
+
+  <!--  <section id="simple-search">
+      <h2> A simple search interface</h2>
+      Let’s now create a simple search interface for querying the data.
+
+      <p>
+        For this purpose, go to a new page, e.g. <semantic-link uri="[[resolvePrefix ":Search"]]">Search</semantic-link> 
+        and edit the page by clicking on the Edit button ( <i class="fa fa-pencil"></i>). 
+        Copy and paste the component definition below into the page and save the page.
+      </p>
+      <mp-code-block>
+        <semantic-simple-search
+            query='
+              SELECT ?resource ?label WHERE {
+               FILTER REGEX(?label, ?__token__, "i")
+               ?resource rdfs:label ?label
+              } LIMIT 10'
+            template='<span style="color: blue;" title="{{resource.value}}">{{label.value}}</span>'
+            placeholder='Search for something e.g. "Bob"'>
+        </semantic-simple-search>
+      </mp-code-block>      
+    </section> -->
+
+    <section id="authoring">     
+      <h2>Step 5&nbsp;&nbsp;Authoring RDF data </h2>
+      
+      Next, we want to create and add new instance data. We will do so via a SPARQL UPDATE operation against the <a href="/sparql" target="_blank">SPARQL endpoint</a>. For example, an <code mode='application/sparql-query'>INSERT</code> query adding a person is shown below:
+      
+      <mp-code-block mode='application/sparql-query'>
+<![CDATA[
+BASE <http://example.com/id/>
+PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+WITH <http://www.metaphacts.com/tutorial/>
+INSERT {  
+  <JohnDoe> 
+    a person:Person;
+    rdfs:label "Mr. John Doe";
+    vcard:given-name "John";
+    vcard:family-name "Doe";
+    vcard:hasGender <http://www.w3.org/2006/vcard/ns#male> .
+} WHERE {}
+]]>
+      </mp-code-block>
+
+    <p>
+     If you have run the above query, you can see that the page about 'John Doe' now shows the data and is not empty: <semantic-link open-in-new-window=true uri="http://example.com/id/JohnDoe">&lt;http://example.com/id/JohnDoe&gt;</semantic-link>
+    </p>
+      
+   <!--   The imported data will now show up as a named graph under <semantic-link uri="[[resolvePrefix "Admin:DataImportExport"]]">Admin:DataImportExport</semantic-link>. -->
+    </section>
+        
+    <section>
+      <br />
+      <p>
+       The above query can be used in an authoring form to enter the data in a end-user friendly way:
+      </p>
+      <br />
+        <mp-code-example show-code=false>
+<![CDATA[
+<semantic-form
+    new-subject-template="http://www.example.com/id/{{UUID}}"
+    post-action="redirect"
+    browser-persistence="true"
+    form-id="example-1"
+    fields='[
+          {
+            "id": "label",
+            "label": "Label",
+            "description": "The label of the instance",
+            "xsdDatatype": "xsd:string",
+            "minOccurs": "1",
+            "maxOccurs": "1",
+            "selectPattern": "SELECT $value WHERE { $subject rdfs:label $value }",
+            "insertPattern": "INSERT { $subject rdfs:label $value; a person:Person. } WHERE {}",
+            "deletePattern": "DELETE { $subject rdfs:label $value; a person:Person. } WHERE {}"
+          },
+           {
+            "id": "givenName",
+            "label": "Given Name",
+            "description": "The given name of the person",
+            "xsdDatatype": "xsd:string",
+            "minOccurs": "1",
+            "maxOccurs": "1",
+            "selectPattern": "SELECT $value WHERE { $subject vcard:given-name $value }",
+            "insertPattern": "INSERT { $subject vcard:given-name  $value } WHERE {}",
+            "deletePattern": "DELETE { $subject vcard:given-name $value } WHERE {}"
+          },
+           {
+            "id": "familyName",
+            "label": "Family Name",
+            "description": "The family name of the person",
+            "xsdDatatype": "xsd:string",
+            "minOccurs": "1",
+            "maxOccurs": "1",
+            "selectPattern": "SELECT $value WHERE { $subject vcard:family-name $value }",
+            "insertPattern": "INSERT { $subject vcard:family-name  $value } WHERE {}",
+            "deletePattern": "DELETE { $subject vcard:family-name $value } WHERE {}"
+          },
+          {
+            "id": "gender",
+            "label": "Gender",
+            "description": "The gender of the person",
+            "xsdDatatype": "xsd:anyURI",
+            "minOccurs": "1",
+            "maxOccurs": "1",
+            "valueSetPattern": "
+              SELECT $value $label WHERE {
+                VALUES ($value $label) {
+                  (<http://www.w3.org/2006/vcard/ns#male> \"Male\")
+                  (<http://www.w3.org/2006/vcard/ns#female> \"Female\")
+                }
+              }
+            ",
+            "selectPattern": "SELECT $value WHERE { $subject vcard:hasGender $value }",
+            "insertPattern": "INSERT { $subject vcard:hasGender $value } WHERE {}",
+            "deletePattern": "DELETE { $subject vcard:hasGender $value } WHERE {}"
+          }          
+            
+        ]'
+>
+  <bs-row>
+    <bs-col xs=6 xs-offset=3>
+      <bs-panel>
+          <h4>Create New Person Instance</h4>
+          <semantic-form-recover-notification></semantic-form-recover-notification>
+          <semantic-form-text-input for="label"></semantic-form-text-input>
+          <semantic-form-text-input for="givenName"></semantic-form-text-input>
+          <semantic-form-text-input for="familyName"></semantic-form-text-input>
+          <semantic-form-select-input for="gender"></semantic-form-select-input>
+
+          <semantic-form-errors></semantic-form-errors>
+          <!-- save and reset button for form -->
+          <button
+              name="submit"
+              class="btn btn-default"
+          >Save</button>
+          <button
+              name="reset"
+              class="btn btn-default"
+          >Reset</button>
+      </bs-panel>
+    </bs-col>
+  </bs-row>
+</semantic-form>
+]]>
+          </mp-code-example>
+        
+			<br />
+      <h3>5.1 EXERCISE - Add data to the graph.</h3>
+      <p>
+        <b>Your task is to add data about yourself to the graph. You can add it either via an INSERT query or via the form above.</b>
+      </p> 
+    </section>
+
+        
+        
+ 	 <section id="catalog">
+      <h2>6 Explore and save queries in the Query Catalog</h2>
+      <p>
+        Feel free to explore further queries from the <mp-link url="/sparql" urlqueryparam-open="true">query catalog</mp-link>. 
+      </p>
+    </section>          
+       <br />
+       <br />
+      <bs-alert bs-style='success'>
+        <p class="text-center"><b>Congratulations</b></p> 
+        <p class="text-center">You’ve finished the Getting Started tutorial! We hope you had fun! :-)</p>
+      </bs-alert>
+
+        <h2>Further Links</h2>
+        <div data-flex-layout='row stretch-left'>
+          [[#> LinkOutsideSection header='Amazon Neptune <br> Preview Sign-up' link='https://pages.awscloud.com/NeptunePreview.html ']]
+            <p>Amazon Neptune Preview Sign-up</p>
+          [[/ LinkOutsideSection]]
+          [[#> LinkOutsideSection header='Amazon Neptune' link='https://aws.amazon.com/neptune/']]
+            <p>Amazon Neptune on AWS website</p>
+          [[/ LinkOutsideSection]]
+          [[#> LinkOutsideSection header='metaphactory' link='https://metaphacts.com/product']]
+            <p>More information about metaphactory</p>
+          [[/ LinkOutsideSection]]
+          [[#> LinkOutsideSection header='SPARQL 1.1' link='https://www.w3.org/TR/sparql11-query/']]
+            <p>SPARQL 1.1 Query Language - W3C recommendation</p>
+          [[/ LinkOutsideSection]]
+        </div>        
+      </bs-col>
+    </bs-row>
+  </div>
+  [[> permid:Footer]]
+</div>

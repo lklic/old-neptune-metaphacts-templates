@@ -1,0 +1,581 @@
+<style>
+.data-label {
+  font-weight:bold;
+	float:left;
+  display:block;
+  width:100%;
+}
+.data-label-inline {
+	font-weight:bold;
+  float:left;
+}
+.data-info {
+	/*margin-left:20px;*/
+	float:left;
+	display:block;
+}
+.data-wrapper {
+  display:block;
+  width:100%;
+  float:left;
+  margin: 10px 0px;
+}
+li.names {
+	
+}
+ul.names-list {
+  columns: 4;
+  -webkit-columns: 4;
+	-moz-columns: 4;
+}
+ul.two-columns {
+  columns: 2;
+  -webkit-columns: 2;
+	-moz-columns: 2;
+}
+ul.names-list-normal {
+
+}
+.text-capitalize {
+	text-transform:capitalize;  
+}
+h3.description {
+	font-style:italic;    
+}
+</style>
+<script>
+  Handlebars.registerHelper('checksize', (a, b, options) => {
+  if (a.length > b) {
+    return options.fn(this)
+  }
+  return options.inverse(this)
+});
+  console.log("asdf");
+  alert("abc");
+</script>
+
+
+<div class="page__body">
+  <div class="top-title">
+  <semantic-query
+    query='
+			PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+			PREFIX person: <http://example.com/person/> 
+			select ?title
+      where {
+       ?person skos:prefLabel ?title. 
+        Filter(?person = <[[this]]>)
+      }'
+			template="{{> itatti-title}}"
+  >
+    <template id="itatti-title">
+    	<h1>
+        {{#each bindings}}
+              {{title.value}}
+        {{/each}}
+      </h1>
+    </template>
+  </semantic-query>
+   <semantic-query
+  	query='
+      PREFIX gvp: <http://vocab.getty.edu/ontology#>
+      PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+      PREFIX schema: <http://schema.org/>
+      select ?description 
+      where {
+        {?person  foaf:focus ?agent.
+        ?agent gvp:biographyPreferred ?bio .
+          ?bio schema:description ?description
+        }
+        Filter(?person = <[[this]]>)
+      }'
+		template="{{> itatti-desc}}"
+	>
+		<template id="itatti-desc">
+      <h3 class="description">
+        {{#each bindings}}
+              {{description.value}}
+        {{/each}}
+      </h3>
+    </template>
+  </semantic-query>
+  </div>
+  <bs-tabs id="tabs">
+  <bs-tab event-key="1" title="Summary">
+    <semantic-query
+    query='
+      PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+      select ?longDescription
+      where { 
+              {
+                ?person  skos:scopeNote ?agent.
+                ?agent rdf:value ?longDescription
+              }  
+        Filter(?person = <[[this]]>)
+      }'
+      template="{{> itatti-notes}}"
+	>
+    <template id="itatti-notes">
+      <div class="data-wrapper">
+        <p style="text-indent: 0em;">
+        {{#each bindings}}
+              {{longDescription.value}}
+          {{/each}}
+        </p>
+      </div>
+    </template>
+    </semantic-query>
+    <!-- Nationality-->
+  <semantic-query
+		query='
+      PREFIX gvp: <http://vocab.getty.edu/ontology#>
+			PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+			PREFIX xl: <http://www.w3.org/2008/05/skos-xl#>
+      select ?country
+      where {
+        {
+          ?person  foaf:focus ?agent.
+          ?agent gvp:nationalityNonPreferred ?naat.
+          ?naat gvp:prefLabelGVP ?nprefLabel.
+          ?nprefLabel xl:literalForm ?country
+        }  
+        Union{ 
+          ?person  foaf:focus ?agent.
+          ?agent gvp:nationalityPreferred ?aat.
+          ?aat gvp:prefLabelGVP ?prefLabel.
+          ?prefLabel xl:literalForm ?country
+        }  
+        Filter(?person = <[[this]]>)
+      }'
+			template="{{> itatti-nationality}}"
+    >
+  	<template id="itatti-nationality">
+      <div class="data-wrapper">
+        <b>Nationality: </b>
+        {{#each bindings}}
+        {{country.value}},&nbsp
+        {{/each}}
+      </div>
+      </template>
+  </semantic-query>
+    <semantic-query
+		query='
+			PREFIX gvp: <http://vocab.getty.edu/ontology#>
+      PREFIX xl: <http://www.w3.org/2008/05/skos-xl#>
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      SELECT ?name
+      WHERE {
+        {
+          ?person gvp:agentTypeNonPreferred ?atnp.
+          ?atnp  gvp:prefLabelGVP ?plg.
+          ?plg xl:literalForm	?name.
+        ?atnp gvp:displayOrder ?order.
+          ?plg gvp:displayOrder ?order1
+       }
+        UNION
+        {
+          ?person gvp:agentTypePreferred ?atp.
+          ?atp  gvp:prefLabelGVP ?plg.
+        ?plg xl:literalForm ?name.
+          ?atp gvp:displayOrder ?order.
+          ?plg gvp:displayOrder ?order1
+        }
+
+       FILTER(?person = <[[this]]>)
+      }
+      LIMIT 20'
+			template="{{> itatti-roles}}"
+	>
+    <template id="itatti-roles">
+        <div class="data-wrapper">
+          <b>Roles: </b>
+            {{#each bindings}}
+              	<span class="text-capitalize">
+                {{name.value}},&nbsp
+              	</span>
+            {{/each}}
+          </div>
+      </template>
+  </semantic-query>
+    <!-- Gender -->
+  <semantic-query 
+		query='
+			PREFIX gvp: <http://vocab.getty.edu/ontology#>
+      PREFIX xl: <http://www.w3.org/2008/05/skos-xl#>
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX foaf:<http://xmlns.com/foaf/0.1/>
+      PREFIX schema:<http://schema.org/>
+
+      SELECT ?gender
+      WHERE {
+        {
+          ?person foaf:focus ?fof.
+           ?fof  gvp:biographyPreferred ?biaography.
+            ?biaography schema:gender ?tempgender.
+             ?tempgender gvp:prefLabelGVP ?plg. 
+          ?plg xl:literalForm	?gender
+      }
+       FILTER(?person = <[[this]]>)
+      }'
+		template="{{> itatti-gender}}"
+	>
+  	 <template id="itatti-gender">
+        <div class="data-wrapper">
+          <b>Gender: </b>
+            {{#each bindings}}
+            <span class="text-capitalize">
+                {{gender.value}}
+            </span>
+            {{/each}}
+        </div>
+      </template>
+  </semantic-query>
+    <!-- Hierarchichal Position -->
+    <semantic-query
+			query='
+      PREFIX gvp: <http://vocab.getty.edu/ontology#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      SELECT ?OparentString ?seeAlso WHERE {
+        {
+          ?person gvp:parentString ?OparentString.
+          ?person gvp:broaderInstantial ?broaderInstantial.
+          ?broaderInstantial rdfs:seeAlso ?seeAlso.
+        }
+        FILTER(?person = <[[this]]>)
+      }'
+			template="{{> itatti-hierarchy}}"
+		>
+      <template id="itatti-hierarchy">
+        <div class="data-wrapper">
+          <div class="data-label-inline">Hierarchical Position: </div>
+          {{#each bindings}}
+          	<mp-resource-link uri="{{seeAlso.value}}">{{OparentString.value}}</mp-resource-link>
+          {{/each}}
+        </div>
+      </template>
+		</semantic-query>
+    <semantic-query
+		query='
+			PREFIX gvp: <http://vocab.getty.edu/ontology#>
+      PREFIX xl: <http://www.w3.org/2008/05/skos-xl#>
+      SELECT ?name WHERE {
+        {
+          ?person xl:altLabel ?al.
+          ?al xl:literalForm ?name.
+          ?al gvp:displayOrder ?order.
+        }
+        UNION
+        {
+          ?person xl:prefLabel ?pl.
+          ?pl xl:literalForm ?name.
+          ?pl gvp:displayOrder ?order.
+        }
+        FILTER(?person = <[[this]]>)
+      }
+      ORDER BY ?order
+      LIMIT 20'
+		template="{{> itatti-list}}"              
+	>
+    <template id="itatti-list">
+      <div class="data-wrapper">
+        {{#ifCond bindings.length ">=" 5}}
+        <div class="data-label">Names:</div>
+        <ul class="names-list">
+          {{#each bindings}}
+          <li class="names">
+              {{name.value}}
+          </li>
+          {{/each}}
+        </ul>
+        {{else}}
+        <div class="data-label">Names: </div>
+        <ul class="names-list-normal">
+        	{{#each bindings}}
+          	<li class="names">
+              {{name.value}}
+          	</li>
+          {{/each}}
+        </ul>
+        {{/ifCond}}
+      </div>
+    </template>
+  </semantic-query>
+    
+    
+<mp-sparql-download
+  query="SELECT [[this]] ?Relation ?Value WHERE {?? ?Relation ?Value. } LIMIT 1000"
+  header="text/csv"
+  filename="results.csv"
+>
+  <a href="#">Download CSV</a>
+</mp-sparql-download>
+    
+    
+  </bs-tab>
+  <bs-tab event-key="2" title="Related & Biographies">
+    <!-- Related People -->
+  <semantic-query
+		query='
+			PREFIX gvp: <http://vocab.getty.edu/ontology#>
+      PREFIX xl: <http://www.w3.org/2008/05/skos-xl#>
+      PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+      PREFIX schema: <http://schema.org/>
+      PREFIX dc: <http://purl.org/dc/elements/1.1/>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      SELECT ?name ?id ?description ?relation ?refLink  WHERE {
+        {
+          VALUES (?relation) {
+            ("teacher of")
+          }
+          ?person gvp:ulan1101_teacher_of ?Oteacher.
+          ?Oteacher dc:identifier ?refLink.
+          ?Oteacher xl:prefLabel ?PLteacher.
+          ?PLteacher xl:literalForm ?name.
+          ?PLteacher dc:identifier ?id.
+          ?Oteacher foaf:focus ?fteacher.
+          ?fteacher gvp:biographyPreferred ?tbio.
+          ?tbio schema:description ?description.
+        }
+        UNION
+        {
+          VALUES (?relation) {
+            ("student of")
+          }
+          ?person gvp:ulan1102_student_of ?Ostudent.
+          ?Ostudent dc:identifier ?refLink.
+          ?Ostudent xl:prefLabel ?PLstudnet.
+          ?PLstudnet xl:literalForm ?name.
+          ?PLstudnet dc:identifier ?id.
+          ?Ostudent foaf:focus ?fstudent.
+          ?fstudent gvp:biographyPreferred ?sbio.
+          ?sbio schema:description ?description.
+        }
+        UNION
+        {
+          VALUES (?relation) {
+            ("influenced")
+          }
+          ?person gvp:ulan1107_influenced ?Oinfluence.
+          ?Oinfluence xl:prefLabel ?PLinfluence.
+          ?Oinfluence dc:identifier ?refLink.
+          ?PLinfluence xl:literalForm ?name.
+          ?PLinfluence dc:identifier ?id.
+          ?Oinfluence foaf:focus ?finfluenc.
+          ?finfluenc gvp:biographyPreferred ?Ibio.
+          ?Ibio schema:description ?description.
+        }
+        UNION
+        {
+          VALUES (?relation) {
+            ("patron was")
+          }
+          ?person gvp:ulan1202_patron_was ?Opatron.
+          ?Opatron xl:prefLabel ?PLpatron.
+          ?Opatron dc:identifier ?refLink.
+          ?PLpatron xl:literalForm ?name.
+          ?PLpatron dc:identifier ?id.
+          ?Opatron foaf:focus ?pinfluenc.
+          ?pinfluenc gvp:biographyPreferred ?pbio.
+          ?pbio schema:description ?description.
+        }
+        UNION
+        {
+          VALUES (?relation) {
+            ("assisted by")
+          }
+          ?person gvp:ulan1308_assisted_by ?Oassisted.
+          ?Oassisted xl:prefLabel ?PLassisted.
+          ?Oassisted dc:identifier ?refLink.
+          ?PLassisted xl:literalForm ?name.
+          ?PLassisted dc:identifier ?id.
+          ?Oassisted foaf:focus ?ainfluenc.
+          ?ainfluenc gvp:biographyPreferred ?abio.
+          ?abio schema:description ?description.
+        }
+        UNION
+        {
+          VALUES (?relation) {
+            ("uncle/aunt of")
+          }
+          ?person gvp:ulan1532_uncle-aunt_of ?Ouncle.
+          ?Ouncle xl:prefLabel ?PLuncle.
+          ?Ouncle dc:identifier ?refLink.
+          ?PLuncle xl:literalForm ?name.
+          ?PLuncle dc:identifier ?id.
+          ?Ouncle foaf:focus ?uinfluenc.
+          ?uinfluenc gvp:biographyPreferred ?ubio.
+          ?ubio schema:description ?description.
+        }
+        UNION
+        {
+          VALUES (?relation) {
+            ("collaborated with")
+          }
+          ?person gvp:ulan1303_collaborated_with ?Ocollaborated.
+          ?Ocollaborated xl:prefLabel ?PLcollaborated.
+          ?Ocollaborated dc:identifier ?refLink.
+          ?PLcollaborated xl:literalForm ?name.
+          ?PLcollaborated dc:identifier ?id.
+          ?Ocollaborated foaf:focus ?cinfluenc.
+          ?cinfluenc gvp:biographyPreferred ?cbio.
+          ?cbio schema:description ?description.
+        }
+        FILTER(?person = <http://vocab.getty.edu/ulan/500010879>)
+      }
+      LIMIT 100'
+		template="{{> itatti-releated-people}}"
+	>
+    <template id="itatti-releated-people">
+        <div class="data-wrapper">
+          <div class="data-label">Related People or Corporate Bodies: </div>
+          <div class="data-info">
+            <!--?name ?id ?description ?relation ?refLink-->
+            {{#each bindings}}
+            <em>{{relation.value}}</em> ... <semantic-link uri="http://vocab.getty.edu/ulan/{{refLink.value}}">{{name.value}}</semantic-link> -- ({{description.value}})<br />
+            {{/each}}
+          </div>
+        </div>
+    </template>
+	</semantic-query>
+  <!-- Biogrpahy -->
+  <semantic-query
+		query='
+			PREFIX gvp: <http://vocab.getty.edu/ontology#>
+      PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+      PREFIX schema: <http://schema.org/>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX dcterms: <http://purl.org/dc/terms/>
+      SELECT ?bio ?seeAlso ?nick WHERE {
+        {
+          ?person foaf:focus ?OBio.
+          ?OBio gvp:biographyNonPreferred ?PLBio.
+          ?PLBio schema:description ?bio.
+          ?PLBio dcterms:contributor ?contributor.
+          ?contributor rdfs:seeAlso ?seeAlso.
+          ?contributor foaf:nick ?nick.
+        }
+        UNION {
+          ?person foaf:focus ?OBio.
+          ?OBio gvp:biographyPreferred ?PLBio.
+          ?PLBio schema:description ?bio.
+          ?PLBio dcterms:contributor ?contributor.
+          ?contributor rdfs:seeAlso ?seeAlso.
+          ?contributor foaf:nick ?nick.
+        }
+        FILTER(?person = <[[this]]>)
+      }'
+		template="{{> itatti-bios}}"
+	>
+    <template id="itatti-bios">
+        <div class="data-wrapper">
+          <div class="data-label">Biographies: </div>
+          <div class="data-info">
+            <!--bio ?seeAlso ?nick-->
+            {{#each bindings}}
+            ({{bio.value}}) ... [<mp-resource-link uri="{{seeAlso.value}}">{{nick.value}}</mp-resource-link>]<br />
+            {{/each}}
+          </div>
+        </div>
+    </template>
+	</semantic-query>
+  </bs-tab>
+  <bs-tab event-key="3" title="Source & Contributors">
+    <!--Additional names -->
+  <semantic-query
+		query='
+			PREFIX gvp: <http://vocab.getty.edu/ontology#>
+      PREFIX xl: <http://www.w3.org/2008/05/skos-xl#>
+      SELECT ?name ?order WHERE {
+        {
+          ?person xl:altLabel ?al.
+          ?al xl:literalForm ?name.
+          ?al gvp:displayOrder ?order.
+        }
+        UNION
+        {
+          ?person xl:prefLabel ?pl.
+          ?pl xl:literalForm ?name.
+          ?pl gvp:displayOrder ?order.
+        }
+        FILTER(?person = <[[this]]>)
+      }
+      #ORDER BY ?order
+			'
+			number-of-displayed-rows=2
+  		options='{"showFilter": false}'
+		template="{{> itatti-additional-names}}"
+	>
+    <template id="itatti-additional-names">
+        <div class="data-wrapper">
+          <div class="data-label">Additional Names:</div>
+          {{#ifCond bindings.length ">=" 5}}
+        <ul class="names-list">
+          {{#each bindings}}
+          <li class="names">
+              {{name.value}}
+          </li>
+          {{/each}}
+        </ul>
+        {{else}}
+          <!--bio ?seeAlso ?nick-->
+        <ul class="names-list-normal">
+        	{{#each bindings}}
+          	<li class="names">
+              {{name.value}}
+          	</li>
+          {{/each}}
+        </ul>
+        {{/ifCond}}
+        </div>
+    </template>
+	</semantic-query>
+  
+    <!--Subjects -->
+  <semantic-query
+		query='PREFIX dcterms: <http://purl.org/dc/terms/>
+      PREFIX bibo: <http://purl.org/ontology/bibo/>
+      SELECT ?Osource ?title ?locator WHERE {
+        {
+          ?person dcterms:source ?Osource.
+          ?Osource bibo:shortTitle ?title.
+        }
+        UNION
+        {
+          ?person dcterms:source ?Osource.
+          ?Osource bibo:locator ?locator.
+          ?Osource dcterms:isPartOf ?isPartOf.
+          ?isPartOf bibo:shortTitle ?title.
+        }
+        FILTER(?person = <[[this]]>)
+      }'
+		template="{{> itatti-subjects}}"
+	>
+    <template id="itatti-subjects">
+			<div class="data-wrapper">
+          <div class="data-label">Subject:</div>
+          {{#ifCond bindings.length ">=" 5}}
+        <ul class="two-columns">
+          {{#each bindings}}
+          <li class="names">
+              <mp-resource-link uri="{{Osource.value}}">{{title.value}}</mp-resource-link> {{locator.value}}
+          </li>
+          {{/each}}
+        </ul>
+        {{else}}
+          <!--bio ?seeAlso ?nick-->
+        <ul class="names-list-normal">
+        	{{#each bindings}}
+          	<li class="names">
+              <mp-resource-link uri="{{Osource.value}}">{{title.value}}</mp-resource-link> {{locator.value}}
+          	</li>
+          {{/each}}
+        </ul>
+        {{/ifCond}}
+			</div>
+    </template>
+  </semantic-query>
+  </bs-tab>
+    <!-- Additional Names -->
+
+</bs-tabs>
+</div>

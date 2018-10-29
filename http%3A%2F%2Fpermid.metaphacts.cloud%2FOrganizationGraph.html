@@ -1,0 +1,58 @@
+<semantic-graph height=600
+                user-zooming-enabled=true 
+                query='
+                  CONSTRUCT {
+                    ?organization a organization:Organization ;
+                                  organization:isIncorporatedIn ?place ;
+                                  fibo:isDomiciledIn ?place2 ;
+                                  organization:hasHoldingClassification ?classification .
+                    
+                    ?positionHolder a person:Officership ;
+                                    person:isPositionIn ?organization ;
+                                    person:hasPositionType ?positionType;
+                                    person:hasHolder ?person .
+                    ?person vcard:hasGender ?gender .
+                    ?positionType rdf:type person:OfficerRole .
+
+                  } WHERE {
+                    ?organization organization:isIncorporatedIn ?place ;
+                                  fibo:isDomiciledIn ?place2 ;
+                                  organization:hasHoldingClassification ?classification .
+                    
+                    ?positionHolder person:isPositionIn ?organization ;
+                                    person:hasPositionType ?positionType;
+                                    person:hasHolder ?person .
+                    ?person vcard:hasGender ?gender .
+                    ?positionType rdf:type person:OfficerRole .
+                    # filter Management Board members
+                    FILTER (?positionType NOT IN (<https://permid.org/1-10010111>, <https://permid.org/1-10010079>, <https://permid.org/1-10010133>, <https://permid.org/1-10010087>))
+                    VALUES(?organization) {
+                      (<https://permid.org/1-4295869227>)
+                    }
+                  }
+                  '
+                hide-predicates='["<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>", "<http://www.w3.org/2006/vcard/ns#hasGender>"]'
+                graph-style='[
+                  {
+                    "selector": "node[property(<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>) *= iri(<http://permid.org/ontology/person/OfficerRole>)]",
+                    "style": {          
+                      "width": 20,
+                      "height": 20
+                     }
+                  },
+                  {
+                    "selector": "node[property(<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>) *= iri(<http://permid.org/ontology/person/Officership>)]",
+                    "style": {          
+                      "label": "",
+                      "border-color": "#FFA500",
+                      "background-image":"/images/icons/thenounproject/np_id-badge_96629_000000.png",
+                      "width": 10,
+                      "height": 10
+                     }
+                   },
+                   [[> permid:GraphStyle]]
+                ]'>
+  <semantic-graph-layout-cose-bilkent ideal-edge-length="100"></semantic-graph-layout-cose-bilkent>
+  <semantic-graph-extension-navigator style="height: 150px; width: 150px;"></semantic-graph-extension-navigator>
+  <semantic-graph-extension-panzoom pan-indicator-min-opacity="0.1"></semantic-graph-extension-panzoom>
+</semantic-graph> 

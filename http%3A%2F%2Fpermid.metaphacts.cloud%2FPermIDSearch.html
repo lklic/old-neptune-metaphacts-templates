@@ -1,0 +1,74 @@
+<style>
+  .component-page-toolbar{
+    display: none;
+  }
+  table.table {
+    min-width: 100%;
+  }
+
+  tr.standard-row {
+    border: none!important;
+  }
+  
+  .table > tbody + tbody {
+    border: none!mportant;
+  }
+  
+  .table > tbody + tbody > tr {
+    border: none!important;
+  }
+  
+  
+  .res-label {
+    float: left;
+  }
+  
+  .res-comment {
+    clear: left;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .res-img-thumbnail {
+    display: inline;
+    float: left;
+    max-width: 50px;
+    max-height: 50px;
+    margin-right: 10px;
+    margin-bottom: 5px;
+  }
+
+</style>
+
+<ol class="page-breadcrumb">
+  <li>
+    <mp-link title="Home" url="/">Home</mp-link>
+  </li>
+  <li class="active">
+    PermID Search
+  </li>
+</ol>
+
+<div class="page">
+  <div class='page__body'>
+<semantic-simple-search
+    query='
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+SELECT ?resource ?name (MIN(?img) as ?imageSample) WHERE {
+#  ?sub <http://permid.org/ontology/organization/hasLEI> ?obj ;
+  ?resource skos:exactMatch|^<http://aws.amazon.com/vocabulary/hasReferenceCustomer> ?obj ;
+   <http://www.w3.org/2006/vcard/ns#organization-name> ?name.
+  FILTER REGEX(?name, ?__token__, "i")
+  OPTIONAL { ?obj wdt:P18|wdt:P154 ?image  BIND(CONCAT("https://commons.wikimedia.org/w/thumb.php?f=", STRAFTER(STR(?image), "Special:FilePath/"), "&w=120") as ?img)}
+} GROUP BY ?resource ?name 
+LIMIT 10'
+    template='<span style="color: blue;" title="{{resource.value}}">{{#if imageSample.value}} <img src="{{{imageSample.value}}}" height="30"/>{{/if}} {{name.value}}</span>'                         
+    input-placeholder='Search for organizations with legal entity number e.g. "Netflix". Type at least three characters.'
+    escape-lucene-syntax='false'                     
+>
+</semantic-simple-search>
+  </div>
+</div>

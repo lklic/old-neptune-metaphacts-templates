@@ -1,0 +1,56 @@
+                                   {
+                                    "selector": "node[property(<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>) *= iri(<http://permid.org/ontology/organization/Organization>)]",
+                                    "style": {
+                                      "content": "data(resource)",
+                                      "background-image": "/images/icons/thenounproject/np_company_1017932_000000.png",
+                                      "background-fit": "contain",
+                                      "height": "50",
+                                      "width": "50",
+                                      "background-position": "center",
+                                      "border-color": "#FFA500",
+                                      "border-width": "3"
+                                     }
+                                    },{
+                                    "selector": "node[property(<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>) *= iri(<http://www.geonames.org/ontology#Feature>)]",
+                                    "style": {          
+                                      "content": "data(resource)",
+                                      "background-image": "/images/icons/thenounproject/np_world_1017141_000000.png",
+                                      "background-fit": "contain",
+                                      "height": "50",
+                                      "width": "50",
+                                      "background-position": "center",
+                                      "border-color": "green",
+                                      "border-width": "3"
+                                     }
+                                    }, {
+                                      "selector": "edge[resource = iri(<http://permid.org/ontology/organization/hasLEI>)]",
+                                      "style": {          
+                                        "content": "organization:hasLEI",
+                                        "font-size": "12"
+                                       }
+                                    },
+                                    {
+                                      "selector": "edge[resource = iri(<http://permid.org/ontology/organization/hasRegisteredPhoneNumber>)]",
+                                      "style": {          
+                                        "content": "organization:hasRegisteredPhoneNumber",
+                                         "font-size": "12"
+                                       }
+                                    }, {
+                                      "selector": "edge[resource = iri(<http://permid.org/ontology/organization/isIncorporatedIn>)]",
+                                      "style": {          
+                                        "content": "organization:isIncorporatedIn",
+                                        "font-size": "12"
+                                       }
+                                    }, {
+                                      "selector": "edge[resource = iri(<http://www.w3.org/2006/vcard/ns#organization-name>)]",
+                                      "style": {          
+                                        "content": "vcard:organization-name",
+                                        "font-size": "12"
+                                       }
+                                    }, {
+                                      "selector": "edge[resource = iri(<http://www.omg.org/spec/EDMC-FIBO/BE/LegalEntities/CorporateBodies/isDomiciledIn>)]",
+                                      "style": {          
+                                        "content": "fibo:isDomiciledIn",
+                                        "font-size": "12"
+                                       }
+                                    }

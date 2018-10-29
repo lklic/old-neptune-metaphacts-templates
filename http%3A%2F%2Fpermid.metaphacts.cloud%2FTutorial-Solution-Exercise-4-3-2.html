@@ -1,0 +1,31 @@
+<h2>Solution Exercise 4.3.2</h2>
+ <br />
+<h3>Graph</h3>   
+    
+ <semantic-graph height="800px" width="800px" query='   
+PREFIX person: <http://permid.org/ontology/person/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
+CONSTRUCT { 
+<https://permid.org/1-5038056692> <http://aws.amazon.com/vocabulary/hasReferenceCustomer> ?sampleReferenceCustomer.
+  ?sampleReferenceCustomer vcard:organization-name ?referenceCustomerName.
+  ?tenure person:isTenureIn ?sampleReferenceCustomer.
+  ?tenure person:hasHolder ?holder.
+  ?holder rdfs:label ?holderName.
+  ?holder person:holdsPosition ?holderPosition.
+  ?holderPosition person:hasReportedTitle ?holderTitle.
+}
+WHERE {
+  <https://permid.org/1-5038056692> <http://aws.amazon.com/vocabulary/hasReferenceCustomer> ?sampleReferenceCustomer.
+  ?sampleReferenceCustomer vcard:organization-name ?referenceCustomerName.
+  ?tenure person:isTenureIn ?sampleReferenceCustomer.
+  ?tenure person:hasHolder ?holder.
+  ?holder rdfs:label ?holderName.
+  ?holder person:holdsPosition ?holderPosition.
+  ?holderPosition person:hasReportedTitle ?holderTitle.
+}
+LIMIT 25
+'>
+<semantic-graph-extension-panzoom pan-indicator-min-opacity="0.1"></semantic-graph-extension-panzoom>
+<semantic-graph-extension-navigator style="height: 150px; width: 150px;"></semantic-graph-extension-navigator>
+</semantic-graph>  

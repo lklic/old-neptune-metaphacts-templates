@@ -1,0 +1,16 @@
+<semantic-simple-search
+  query='
+    PREFIX foaf: <http://xmlns.com/foaf/0.1/> 
+    PREFIX person: <http://example.com/person/> 
+    SELECT ?resource ?label ?typelabel
+		WHERE {
+      		?resource a <http://vocab.getty.edu/ontology#PersonConcept>. 
+    ?resource rdfs:label ?label.
+      FILTER REGEX(?label, ?__token__, "i")
+    } 
+
+		LIMIT 10
+  	'
+  template='<span style="color: blue;" title="{{resource.value}}">{{label.value}} ({{typelabel.value}})</span>'
+  input-placeholder='Search for an artist name e.g. "Michelangelo"'
+></semantic-simple-search>

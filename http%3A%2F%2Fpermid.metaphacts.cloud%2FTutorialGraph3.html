@@ -1,0 +1,36 @@
+      <bs-panel header='Querying across datasets'>
+        <div style='position: relative;'>
+          <semantic-graph 
+                query='
+                  PREFIX wgs84: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+                  PREFIX fibo: <http://www.omg.org/spec/EDMC-FIBO/BE/LegalEntities/CorporateBodies/>
+                  PREFIX organization: <http://permid.org/ontology/organization/>
+                  PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
+                  PREFIX geo: <http://www.geonames.org/ontology#>
+                  CONSTRUCT WHERE {
+                    <https://permid.org/1-4295902158> a organization:Organization ;
+                                                        vcard:organization-name ?organizationName ;
+                                                        organization:hasRegisteredPhoneNumber ?phoneNumber ;
+                                                        organization:isIncorporatedIn ?isIncorporatedIn ;
+                                                        fibo:isDomiciledIn ?location.
+                    ?location a <http://www.geonames.org/ontology#Feature> ;
+                             geo:countryCode ?countryCode ;
+                             wgs84:lat ?lat;
+                             wgs84:long ?long.
+                  }
+                '
+                open-links-in-new-window=true
+                hide-predicates='["<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>"]'
+                graph-style='[ [[> permid:TutorialGraphStyle]],
+                               [[> permid:GraphStyle]] 
+                             ]'         
+          >  
+            <semantic-graph-layout-cose-bilkent ideal-edge-length="170"></semantic-graph-layout-cose-bilkent>
+            <semantic-graph-extension-panzoom zoom-only=true></semantic-graph-extension-panzoom>
+          </semantic-graph>
+          <div style="position: absolute; bottom: 0; left: 0; font-size:9pt;">
+            <div><i class="fa fa-circle" aria-hidden="true" style='color: #FFA500;'></i> PermID: Thomson Reuters (CC BY 4.0)</div>
+            <div><i class="fa fa-circle" aria-hidden="true" style='color: green;'></i> GeoNames: geonames.org (CC BY 3.0)</div>
+          </div>
+        </div>
+      </bs-panel>

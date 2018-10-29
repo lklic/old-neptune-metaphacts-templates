@@ -1,0 +1,225 @@
+<style> 
+  .component-page-toolbar__btn_edit{ display: none; } 
+
+  .material-design-theme .page__header-body {
+    padding: 0;
+  }
+  
+  .material-design-theme .page__header {
+    margin-bottom: 0;
+  }
+</style>
+<ol class="page-breadcrumb">
+  <li>
+    <mp-link title="Home" url="/">Home</mp-link>
+  </li>
+  <li class="active">
+    <mp-label iri='[[this]]'></mp-label>
+  </li>
+</ol>
+
+<div class="page material-design-theme">
+
+  <div class='page__header'>
+    [[> Platform:DefaultResourceHeader noImage="/images/icons/thenounproject/np_company_1017932_000000.png"]]
+  </div>
+  <div class='page__body'>
+		<bs-row>     
+      <bs-col md=6>
+        <h2>Organization Sub-Graph</h2>
+        <semantic-graph query='
+        CONSTRUCT {
+          ?? a organization:Organization ;
+          organization:isIncorporatedIn ?place ;
+          fibo:isDomiciledIn ?place2 ;
+          organization:hasHoldingClassification ?classification .
+
+          ?place a <http://www.geonames.org/ontology#Feature> .
+          ?place2 a <http://www.geonames.org/ontology#Feature> .
+
+          ?positionHolder a person:Officership ;
+          person:isPositionIn ?? ;
+          person:hasPositionType ?positionType;
+          person:hasHolder ?person .
+          ?person vcard:hasGender ?gender .
+          ?positionType rdf:type person:OfficerRole .
+
+        } WHERE {
+          OPTIONAL {{
+            SELECT ?positionHolder {
+              ?positionHolder person:isPositionIn ??;
+                              person:hasPositionType/person:rank ?rank ;
+                              person:hasHolder ?person .
+              # check if personal record is not suspended
+              ?person common:hasPublicationStatus common:publicationstatuspublished .
+
+              # show only current positions
+              FILTER NOT EXISTS { ?positionHolder <http://permid.org/ontology/common/to> ?to } 
+            } ORDER BY ?rank LIMIT 5
+          }}
+          OPTIONAL {
+            ?? organization:isIncorporatedIn ?place .
+          }
+          OPTIONAL {
+            ?? fibo:isDomiciledIn ?place2 .
+          }
+          OPTIONAL {
+            ?? organization:hasHoldingClassification ?classification .
+          }
+
+          OPTIONAL {
+            ?positionHolder person:isPositionIn ?? ;
+                            person:hasPositionType ?positionType ;
+                            person:hasReportedTitle ?positionTitle ;
+                            person:hasHolder ?person .
+            ?person vcard:hasGender ?gender .
+          }
+        }
+
+                          '
+                        hide-predicates='["<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>", "<http://www.w3.org/2006/vcard/ns#hasGender>"]'
+                        graph-style='[
+                           [[> permid:GraphStyle]]
+                        ]'>
+            <semantic-graph-layout-breadthfirst roots='["<[[this]]>"]' circle=true animate=true spacing-factor="0.8" avoid-overlap=true padding=5
+            ></semantic-graph-layout-breadthfirst>
+              <!-- <semantic-graph-layout-cose-bilkent ideal-edge-length=150 edge-elasticity=2></semantic-graph-layout-cose-bilkent> -->
+        <semantic-graph-extension-navigator style="height: 150px; width: 150px;"></semantic-graph-extension-navigator>
+          <semantic-graph-extension-panzoom pan-indicator-min-opacity="0.1"></semantic-graph-extension-panzoom>
+        </semantic-graph>            
+      </bs-col>
+      <bs-col md=6>
+        <h2>Headquarter</h2>
+        <bs-row>
+          <bs-col md=6>
+            <b>Address</b>
+            <div class="card"> <!--style="width: 20rem;" -->
+              <div class="card-body">
+                <semantic-query style="white-space: pre-line;" query='SELECT ?address WHERE {?? <http://ont.thomsonreuters.com/mdaas/HeadquartersAddress> ?address.} LIMIT 1'></semantic-query>
+                <semantic-query query="SELECT ?url WHERE {?? <http://www.w3.org/2006/vcard/ns#hasURL> ?url} LIMIT 1" template='{{> address}}'
+                                >
+                  <template id='address'>
+                    {{#each bindings}}
+                    <div data-flex-layout="row center-left">
+                      <i class="fa fa-globe" style="float:left;" aria-hidden="true"></i> <a href="{{url.value}}" style="margin-left:10px;" target="_blank">{{url.value}}</a>
+                    </div>
+                    {{/each}}
+                  </template>
+                </semantic-query>
+              </div>
+            </div>
+          </bs-col>
+          <bs-col md=6>
+[[#if (ask "ASK {?? <http://www.omg.org/spec/EDMC-FIBO/BE/LegalEntities/CorporateBodies/isDomiciledIn>/<http://www.w3.org/2003/01/geo/wgs84_pos#lat> ?lat}")]]
+              <b>Country</b>
+           		<div style="width:100%;height:300px;">
+                 <semantic-map query='SELECT ?domicilLocation ?domicilLocationname ?lat ?lng WHERE {
+                                     ?? <http://www.omg.org/spec/EDMC-FIBO/BE/LegalEntities/CorporateBodies/isDomiciledIn> ?domicilLocation.
+                                     ?domicilLocation a <http://www.geonames.org/ontology#Feature>.
+                                     ?domicilLocation <http://www.geonames.org/ontology#name> ?domicilLocationname;
+                                                      <http://www.w3.org/2003/01/geo/wgs84_pos#lat> ?lat;
+                                                      <http://www.w3.org/2003/01/geo/wgs84_pos#long> ?lng.
+                                    }LIMIT 1'
+                              fix-zoom-level=3
+                              tuple-template='{{> marker}}'
+                 >
+                   <template id='marker'>
+                     <div style='font-size: 8px;'>
+                       <semantic-link uri="{{domicilLocation.value}}">{{domicilLocationname.value}}</semantic-link>
+                       <semantic-query query="SELECT ?address WHERE {?? <http://ont.thomsonreuters.com/mdaas/HeadquartersAddress> ?address}">
+                       </semantic-query>
+                     </div>
+                   </template>
+                 </semantic-map>
+              </div>
+[[/if]]
+          </bs-col>
+        </bs-row>
+     </bs-col>
+   </bs-row>
+   <bs-row>
+      <bs-col md=6>
+        <h2>Current Officers &amp; Directors</h2>
+        <semantic-table query='SELECT DISTINCT (SAMPLE(?holder) as ?person) (YEAR(?from) as ?start) ?firstName ?lastName ?title (MIN(?rank) as ?minRank) WHERE { 
+                           ?s <http://permid.org/ontology/person/isPositionIn> ?? . 
+                           ?s <http://permid.org/ontology/person/hasHolder> ?holder . 
+                           ?holder <http://www.w3.org/2006/vcard/ns#family-name> ?lastName . 
+                           ?holder <http://www.w3.org/2006/vcard/ns#given-name> ?firstName.
+                           ?holder common:hasPublicationStatus common:publicationstatuspublished .
+                           OPTIONAL { ?s <http://permid.org/ontology/person/hasReportedTitle> ?title }
+                           OPTIONAL { ?s <http://permid.org/ontology/person/hasPositionType> ?positionTypeId . ?positionTypeId rdf:type ?positionType . ?positionTypeId <http://permid.org/ontology/person/rank> ?rank . } 
+                           OPTIONAL { ?s <http://permid.org/ontology/common/from> ?from } 
+  												 FILTER NOT EXISTS { ?s <http://permid.org/ontology/common/to> ?to } 
+                         } GROUP BY ?firstName ?lastName ?title ?from ORDER BY ?minRank '
+                        column-configuration='[
+                            {"variableName": "person", "displayName": "Person"},
+                            {"variableName": "start", "displayName": "Start"},
+                            {"variableName": "title", "displayName": "Title"}
+                          ]'
+                        no-result-template='<div class="well text-center">No results in the dataset for this organization</div>'
+                        options='{"showFilter": false}'>
+          </semantic-table>
+			</bs-col>
+          
+      <bs-col md=6>
+        <h2>Number of Officers in last 10 years</h2>
+        <semantic-chart
+          type="line"
+          provider="highcharts"
+          query='
+            SELECT ?year (COUNT(DISTINCT ?person) AS ?personCount) WHERE {
+              ?tenureHolder person:isTenureIn ??;
+                  person:hasHolder ?person .
+              
+              OPTIONAL {
+                  ?tenureHolder common:from ?from .
+              }
+              OPTIONAL {
+                ?tenureHolder common:to ?to .
+              }
+
+              FILTER ((YEAR(?from) <= ?year || !BOUND(?from)) && (YEAR(?to) >= ?year || !BOUND(?to)))
+
+               VALUES(?year) {
+                  (2010)
+                  (2011)
+                  (2012)
+                  (2013)
+                  (2014)
+                  (2015)
+                  (2016)
+                  (2017)
+               }
+            } GROUP BY ?year ORDER BY ?year
+          '
+          sets='[{"dataSetName": "Number of Officers per year", "category": "year", "y": "personCount"}]'
+          no-result-template='<div class="well text-center">No results in the dataset for this organization</div>'
+      	>
+      	</semantic-chart>
+        
+        <h2>Previous Organizations of current Tenure Holders</h2>
+				<semantic-chart provider="highcharts"
+                        query='SELECT ?anotherCompany (COUNT(?anotherCompany) as ?count)  WHERE {
+                  ?person ^<http://permid.org/ontology/person/hasHolder> ?currentTenture. 
+                                  ?currentTenture <http://permid.org/ontology/person/isTenureIn> ??.
+                  OPTIONAL{
+                    ?person ^<http://permid.org/ontology/person/hasHolder> ?anotherTenture. 
+                    ?anotherTenture <http://permid.org/ontology/person/isTenureIn> ?anotherCompany.
+                    ?anotherTenture <http://permid.org/ontology/common/to> ?anotherCompanyTentureTo.
+                    ?anotherCompany a ?anotherCompanyType.
+                  }
+
+                  ?currentTenture <http://permid.org/ontology/common/from> ?from.
+                  FILTER NOT EXISTS{  ?currentTenture <http://permid.org/ontology/common/to> ?to.}
+                  FILTER(?? !=?anotherCompany)
+                  FILTER(NOW()>?from)
+                }GROUP BY ?anotherCompany ORDER BY DESC(?count) LIMIT 5'
+                type="bar" 
+                sets='[{"dataSetName": "Employees", "category": "anotherCompany", "value": "count"}]'
+                no-result-template='<div class="well text-center">No results in the dataset for this organization</div>'
+           >
+           </semantic-chart>
+      </bs-col>
+    </bs-row>
+  </div>
+</div>

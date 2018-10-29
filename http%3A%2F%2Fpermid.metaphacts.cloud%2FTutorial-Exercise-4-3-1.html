@@ -1,0 +1,40 @@
+<h2>Tutorial Exercise 4.3.1</h2>
+
+Click on "Edit page" on the top-right to add your html-code and query to this page and then click 'save'.
+
+<!-- The SPARQL query of step 2.6 -->
+<!-- Your task is to visualize it as a table -->
+<!--
+
+PREFIX person: <http://permid.org/ontology/person/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
+SELECT DISTINCT ?sampleReferenceCustomer ?referenceCustomerName ?holderName ?holderPosition ?holderTitle WHERE {
+  <https://permid.org/1-5038056692> <http://aws.amazon.com/vocabulary/hasReferenceCustomer> ?sampleReferenceCustomer.
+  ?sampleReferenceCustomer vcard:organization-name ?referenceCustomerName.
+  ?tenure person:isTenureIn ?sampleReferenceCustomer.
+  ?tenure person:hasHolder ?holder.
+  ?holder rdfs:label ?holderName.
+  ?holder person:holdsPosition ?holderPosition.
+  ?holderPosition person:hasReportedTitle ?holderTitle.
+}
+LIMIT 25
+
+--> 
+
+<semantic-table query="PREFIX person: <http://permid.org/ontology/person/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
+SELECT DISTINCT ?sampleReferenceCustomer ?referenceCustomerName ?holderName ?holderPosition ?holderTitle WHERE {
+  <https://permid.org/1-5038056692> <http://aws.amazon.com/vocabulary/hasReferenceCustomer> ?sampleReferenceCustomer.
+  ?sampleReferenceCustomer vcard:organization-name ?referenceCustomerName.
+  ?tenure person:isTenureIn ?sampleReferenceCustomer.
+  ?tenure person:hasHolder ?holder.
+  ?holder rdfs:label ?holderName.
+  ?holder person:holdsPosition ?holderPosition.
+  ?holderPosition person:hasReportedTitle ?holderTitle.
+}
+LIMIT 25">
+  
+<\semantic-table>
+

@@ -1,0 +1,298 @@
+<ol class="page-breadcrumb">
+  <li>
+    <mp-link title="Home" url="/">Home</mp-link>
+  </li>
+  <li class="active">Help</li>
+</ol>
+<div class='page page-help'> 
+  <div class='page__body'>
+  <semantic-link title="" uri=":TutorialComments">TutorialComments - Comments, Ideas, Outline (while in development, to be removed before production)</semantic-link> 
+   
+   	<h1>Tutorial Content Draft</h1>
+
+    <h2>1. SPARQL SELECT</h2>
+    Result projection into a tuple results
+		<h3>1.1 Select all outgoing edges and nodes from Netflix Inc</h3>
+    The node <b>Netflix Inc</b> is uniquely identified by the resource identifier 
+    <p><code>&lt;https://permid.org/1-4295902158&gt;</code></p>
+    <bs-row>
+    	<bs-col md=6>
+      	<div class="documentation__example">
+<pre>
+<code>
+SELECT * WHERE {
+ &lt;https://permid.org/1-4295905494&gt; ?p ?o.
+}
+</code>
+</pre>
+        </div>
+        <mp-link url="/sparql#query=SELECT+*+WHERE+%7B%0A+%3Chttps%3A%2F%2Fpermid.org%2F1-4295905494%3E+%3Fp+%3Fo.%0A%7D">
+          <button class="btn btn-primary">Execute</button>
+        </mp-link>
+    </bs-col>
+		<bs-col md=6>
+      <mp-code-example>
+				<semantic-table 
+                        query='SELECT * WHERE {
+      <https://permid.org/1-4295905494> ?p ?o.
+    }'
+                        number-of-displayed-rows='2'>
+        </semantic-table>
+      </mp-code-example>
+    </bs-col>
+</bs-row>
+		<h3>1.2 Select the LEI (legal entity number) of Netflix Inc</h3>       
+    <div class="documentation__example">   
+<pre>
+<code>
+PREFIX org: &lt;http://permid.org/ontology/organization/&gt; 
+
+SELECT * WHERE {
+ &lt;https://permid.org/1-4295902158&gt; org:hasLEI ?o.
+}
+</code>
+</pre>
+     </div>
+    <mp-link url="/sparql#query=PREFIX+org%3A+%3Chttp%3A%2F%2Fpermid.org%2Fontology%2Forganization%2F%3E+%0A%0ASELECT+*+WHERE+%7B%0A+%3Chttps%3A%2F%2Fpermid.org%2F1-4295902158%3E+org%3AhasLEI+%3Fo.%0A%7D">
+      <button class="btn btn-primary">Execute</button>
+    </mp-link>
+
+    <h3>1.3 Select the domicil location of Netflix Inc.</h3>       
+    <div class="documentation__example">   
+<pre>
+<code>
+PREFIX wgs84: &lt;http://www.w3.org/2003/01/geo/wgs84_pos#&gt;
+PREFIX fibo: &lt;http://www.omg.org/spec/EDMC-FIBO/BE/LegalEntities/CorporateBodies/&gt;
+
+SELECT ?location ?lat ?long WHERE {
+ &lt;https://permid.org/1-4295902158&gt; fibo:isDomiciledIn ?location.
+ ?location wgs84:lat ?lat.
+ ?location wgs84:long ?long.
+}
+</code>
+</pre>
+     </div>
+    <mp-link url="/sparql#query=PREFIX+wgs84%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2003%2F01%2Fgeo%2Fwgs84_pos%23%3E%0APREFIX+fibo%3A+%3Chttp%3A%2F%2Fwww.omg.org%2Fspec%2FEDMC-FIBO%2FBE%2FLegalEntities%2FCorporateBodies%2F%3E%0A%0ASELECT+%3Flocation+%3Flat+%3Flong+WHERE+%7B%0A+%3Chttps%3A%2F%2Fpermid.org%2F1-4295902158%3E+fibo%3AisDomiciledIn+%3Flocation.%0A+%3Flocation+wgs84%3Alat+%3Flat.%0A+%3Flocation+wgs84%3Along+%3Flong.%0A%7D">
+      <button class="btn btn-primary">Execute</button>
+    </mp-link>
+ 	
+    
+    <h2>2 SPARQL CONSTRUCT</h2>
+		Graph Transformation
+    
+    <h3>2.1 Simple Graph Transformation</h3>
+    Creating a new edge (binary relation) based on an existing binary relation.
+  	<div class="documentation__example">   
+<pre>
+<code>
+PREFIX org: &lt;http://permid.org/ontology/organization/&gt; 
+
+CONSTRUCT{ 
+	?orga :hasLegalEntityNumber ?lei.
+} WHERE {
+	?orga org:hasLEI ?lei.
+  BIND(&lt;https://permid.org/1-4295902158&gt; as ?orga)
+}
+</code>
+</pre>
+    </div>
+    <mp-link url="/sparql#query=PREFIX+org%3A+%3Chttp%3A%2F%2Fpermid.org%2Fontology%2Forganization%2F%3E+%0A%0ACONSTRUCT%7B+%0A++%3Forga+%3AhasLegalEntityNumber+%3Flei.%0A%7D+WHERE+%7B%0A++%3Forga+org%3AhasLEI+%3Flei.%0A++BIND(%3Chttps%3A%2F%2Fpermid.org%2F1-4295902158%3E+as+%3Forga)%0A%7D">
+      <button class="btn btn-primary">Execute</button>
+    </mp-link>
+      
+       	<div class="documentation__example">   
+<pre>
+<code>
+PREFIX org: &lt;http://permid.org/ontology/organization/&gt; 
+
+CONSTRUCT{ 
+	?orga :hasLeiUrl ?leiUrl.
+} WHERE {
+	?orga org:hasLEI ?lei.
+  BIND(CONCAT("https://www.gleif.org/lei/",?lei) as ?leiUrl)
+  BIND(&lt;https://permid.org/1-4295902158&gt; as ?orga)
+}
+</code>
+</pre>
+             </div>
+    <mp-link url="/sparql#query=PREFIX+org%3A+%3Chttp%3A%2F%2Fpermid.org%2Fontology%2Forganization%2F%3E+%0A%0ACONSTRUCT%7B+%0A++%3Forga+%3AhasLeiUrl+%3FleiUrl.%0A%7D+WHERE+%7B%0A++%3Forga+org%3AhasLEI+%3Flei.%0A++BIND(CONCAT(%22https%3A%2F%2Fwww.gleif.org%2Flei%2F%22%2C%3Flei)+as+%3FleiUrl)%0A++BIND(%3Chttps%3A%2F%2Fpermid.org%2F1-4295902158%3E+as+%3Forga)%0A%7D">
+      <button class="btn btn-primary">Execute</button>
+    </mp-link>
+
+    <h3>2.2 Simple Graph Transformation</h3>
+    Transformation a multi-hop path into a binary relation.
+    <div class="documentation__example">   
+<pre>
+<code>
+PREFIX person: &lt;http://permid.org/ontology/person/&gt;
+
+CONSTRUCT{ 
+	?person :hasPositionIn ?orga 
+} WHERE {
+	?orga ^person:isPositionIn/person:hasHolder ?person. 
+  BIND(&lt;https://permid.org/1-4295902158&gt; as ?orga)
+}
+</code>
+</pre>
+     </div>
+     <mp-link url="/sparql#query=PREFIX+person%3A+%3Chttp%3A%2F%2Fpermid.org%2Fontology%2Fperson%2F%3E%0A%0ACONSTRUCT%7B+%0A++%3Fperson+%3AhasPositionIn+%3Forga+%0A%7D+WHERE+%7B%0A++%3Forga+%5Eperson%3AisPositionIn%2Fperson%3AhasHolder+%3Fperson.+%0A++BIND(%3Chttps%3A%2F%2Fpermid.org%2F1-4295902158%3E+as+%3Forga)%0A%7D">
+      <button class="btn btn-primary">Execute</button>
+    </mp-link>
+
+   	<h3>2.3 Graph Transformation including string manipulation</h3>
+        <div class="documentation__example">   
+<pre>
+<code>
+PREFIX vcard: &lt;http://www.w3.org/2006/vcard/ns#&gt; 
+PREFIX person: &lt;http://permid.org/ontology/person/&gt;
+PREFIX position: &lt;http://permid.org/ontology/common/&gt;
+
+CONSTRUCT {
+  ?personId vcard:positionIn ?orgId.
+  vcard:positionIn rdfs:label ?positionTitle.
+} WHERE {
+  ?orgId vcard:organization-name  &quot;Netflix Inc&quot; .
+  ?personId vcard:given-name &quot;Reed&quot; .
+  ?personId vcard:family-name &quot;Hastings&quot; .
+  ?tenureId person:isPositionIn ?orgId .
+  ?tenureId person:hasReportedTitle ?title .  
+  ?tenureId person:hasHolder ?personId .
+  ?tenureId position:from ?from .
+  OPTIONAL { ?tenureId position:to ?to }
+  ?tenureId person:hasPositionType ?positionType .
+  ?positionType skos:prefLabel ?positionTypeLabel .
+  BIND(
+  	CONCAT(
+      STR(?positionTypeLabel),&quot; - &quot;,
+      STR(?title),&quot; (&quot;,STR(YEAR(?from)),&quot; - &quot;,
+      IF(BOUND(?to),STR(YEAR(?to)),&quot; now&quot;),&quot;)&quot;
+    ) 
+    as ?positionTitle
+  )
+}
+</code>
+</pre>
+     </div>
+    <mp-link url="/sparql#query=PREFIX+vcard%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2006%2Fvcard%2Fns%23%3E+%0APREFIX+person%3A+%3Chttp%3A%2F%2Fpermid.org%2Fontology%2Fperson%2F%3E%0APREFIX+position%3A+%3Chttp%3A%2F%2Fpermid.org%2Fontology%2Fcommon%2F%3E%0A%0ACONSTRUCT+%7B%0A++%3FpersonId+vcard%3ApositionIn+%3ForgId.%0A++vcard%3ApositionIn+rdfs%3Alabel+%3FpositionTitle.%0A%7D+WHERE+%7B%0A++%3ForgId+vcard%3Aorganization-name++%22Netflix+Inc%22+.%0A++%3FpersonId+vcard%3Agiven-name+%22Reed%22+.%0A++%3FpersonId+vcard%3Afamily-name+%22Hastings%22+.%0A++%3FtenureId+person%3AisPositionIn+%3ForgId+.%0A++%3FtenureId+person%3AhasReportedTitle+%3Ftitle+.++%0A++%3FtenureId+person%3AhasHolder+%3FpersonId+.%0A++%3FtenureId+position%3Afrom+%3Ffrom+.%0A++OPTIONAL+%7B+%3FtenureId+position%3Ato+%3Fto+%7D%0A++%3FtenureId+person%3AhasPositionType+%3FpositionType+.%0A++%3FpositionType+skos%3AprefLabel+%3FpositionTypeLabel+.%0A++BIND(%0A++++CONCAT(%0A++++++STR(%3FpositionTypeLabel)%2C%22+-+%22%2C%0A++++++STR(%3Ftitle)%2C%22+(%22%2CSTR(YEAR(%3Ffrom))%2C%22+-+%22%2C%0A++++++IF(BOUND(%3Fto)%2CSTR(YEAR(%3Fto))%2C%22+now%22)%2C%22)%22%0A++++)+%0A++++as+%3FpositionTitle%0A++)%0A%7D">
+      <button class="btn btn-primary">Execute</button>
+    </mp-link>
+    <bs-row>
+      <bs-col md=6>
+        <semantic-graph width='50%' query='PREFIX vcard: <http://www.w3.org/2006/vcard/ns#> 
+            PREFIX person: <http://permid.org/ontology/person/>
+            PREFIX position: <http://permid.org/ontology/common/>
+            CONSTRUCT {
+              ?orgId vcard:organization-name  "Netflix Inc" .
+              ?personId vcard:given-name "Reed" .
+              ?personId vcard:family-name "Hastings" .
+              ?tenureId person:isPositionIn ?orgId .
+              ?tenureId person:hasReportedTitle ?title .  
+              ?tenureId person:hasHolder ?personId .
+              ?tenureId position:from ?from .
+              ?tenureId position:to ?to.
+              ?tenureId person:hasPositionType ?positionType .
+              ?positionType skos:prefLabel ?positionTypeLabel .
+            } WHERE {
+              ?orgId vcard:organization-name  "Netflix Inc" .
+              ?personId vcard:given-name "Reed" .
+              ?personId vcard:family-name "Hastings" .
+              ?tenureId person:isPositionIn ?orgId .
+              ?tenureId person:hasReportedTitle ?title .  
+              ?tenureId person:hasHolder ?personId .
+              ?tenureId position:from ?from .
+              OPTIONAL { ?tenureId position:to ?to }
+              ?tenureId person:hasPositionType ?positionType .
+              ?positionType skos:prefLabel ?positionTypeLabel .
+              BIND(CONCAT(STR(?title)," (",STR(YEAR(?from))," - ",IF(BOUND(?to),STR(YEAR(?to))," now"),")") as ?positionTitle)
+            }'>
+           <semantic-graph-layout-circle></semantic-graph-layout-circle>
+          <semantic-graph-extension-panzoom pan-indicator-min-opacity="0.1"></semantic-graph-extension-panzoom>
+        </semantic-graph>
+			</bs-col>
+      <bs-col md=6>
+<semantic-graph width='50%' query='PREFIX vcard: <http://www.w3.org/2006/vcard/ns#> 
+              PREFIX person: <http://permid.org/ontology/person/>
+              PREFIX position: <http://permid.org/ontology/common/>
+              CONSTRUCT {
+                ?personId vcard:positionIn ?orgId.
+                vcard:positionIn rdfs:label ?positionTitle.
+              } WHERE {
+                ?orgId vcard:organization-name  "Netflix Inc" .
+                ?personId vcard:given-name "Reed" .
+                ?personId vcard:family-name "Hastings" .
+                ?tenureId person:isPositionIn ?orgId .
+                ?tenureId person:hasReportedTitle ?title .  
+                ?tenureId person:hasHolder ?personId .
+                ?tenureId position:from ?from .
+                OPTIONAL { ?tenureId position:to ?to }
+                ?tenureId person:hasPositionType ?positionType .
+                ?positionType skos:prefLabel ?positionTypeLabel .
+                BIND(CONCAT(STR(?positionTypeLabel)," (",STR(YEAR(?from)),"-",IF(BOUND(?to),STR(YEAR(?to))," now"),")\n") as ?positionTitle)
+              }'
+             graph-style='[
+                {       
+                  "selector": "edge[resource = iri(<http://www.w3.org/2006/vcard/ns#positionIn>)]",
+                  "style": {
+                    "line-style": "dashed",
+                    "font-size" : "0.4em",
+                    "text-wrap": "wrap",
+                    "text-max-width":"120px",
+                          "text-background" : "none",
+                    "text-background-opacity" : "0",
+                    "content": "{{#each [<http://www.w3.org/2000/01/rdf-schema#label>]}} {{this.value}} {{/each}}"
+                  }
+               }
+             ]'>
+            <semantic-graph-extension-panzoom pan-indicator-min-opacity="0.1" max-zoom=5></semantic-graph-extension-panzoom>
+          </semantic-graph>
+        </bs-col>
+    </bs-row>
+    <h2>3 SPARQL UPDATE</h2>
+    Graph Manipulation
+    <h3> Insertion </h3>
+    <div class="documentation__example">   
+<pre>
+<code>
+PREFIX person: &lt;http://permid.org/ontology/person/&gt; 
+PREFIX vcard: &lt;http://www.w3.org/2006/vcard/ns#&gt; 
+
+INSERT {
+	GRAPH&lt;https://example.org/userdata&gt;{
+   &lt;https://example.org/joedoe&gt; rdf:type person:Person.
+   &lt;https://example.org/joedoe&gt; vcard:given-name "Joe" .
+   &lt;https://example.org/joedoe&gt; vcard:family-name "Doe" .
+  }
+}WHERE {}
+</code>
+</pre>
+     </div>
+    <mp-link url="/sparql#query=PREFIX+person%3A+%3Chttp%3A%2F%2Fpermid.org%2Fontology%2Fperson%2F%3E+%0APREFIX+vcard%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2006%2Fvcard%2Fns%23%3E+%0A%0AINSERT+%7B%0A++GRAPH%3Chttps%3A%2F%2Fexample.org%2Fuserdata%3E%7B%0A+++%3Chttps%3A%2F%2Fexample.org%2Fjoedoe%3E+rdf%3Atype+person%3APerson.%0A+++%3Chttps%3A%2F%2Fexample.org%2Fjoedoe%3E+vcard%3Agiven-name+%22Joe%22+.%0A+++%3Chttps%3A%2F%2Fexample.org%2Fjoedoe%3E+vcard%3Afamily-name+%22Doe%22+.%0A++%7D%0A%7DWHERE+%7B%7D">
+      <button class="btn btn-primary">Execute</button>
+    </mp-link>
+    <h3> Deletion </h3>
+      
+          <div class="documentation__example">   
+<pre>
+<code>
+PREFIX vcard: &lt;http://www.w3.org/2006/vcard/ns#&gt; 
+
+DELETE {
+	GRAPH ?graph{
+   ?person ?p ?o.
+  }
+}WHERE {
+	GRAPH ?graph{
+   ?person vcard:given-name "Joe" .
+   ?person vcard:family-name "Doe" .
+   ?person ?p ?o.
+  }
+}
+</code>
+</pre>
+     </div>
+    <mp-link url="/sparql#query=PREFIX+vcard%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2006%2Fvcard%2Fns%23%3E+%0A%0ASELECT+*+WHERE+%7B%0A++GRAPH+%3Fgraph%7B%0A+++%3Fperson+vcard%3Agiven-name+%22Joe%22+.%0A+++%3Fperson+vcard%3Afamily-name+%22Doe%22+.%0A+++%3Fperson+%3Fp+%3Fo.%0A++%7D%0A%7D">
+      <button class="btn btn-primary">Execute</button>
+    </mp-link>
+  </div>
+</div>
+

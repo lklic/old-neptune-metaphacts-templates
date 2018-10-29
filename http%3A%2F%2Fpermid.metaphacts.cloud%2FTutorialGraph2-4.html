@@ -1,0 +1,30 @@
+<bs-panel header='The data to be selected in Exercise 2.4'>
+    <semantic-graph 
+                    query='
+                      CONSTRUCT WHERE {
+                        <https://permid.org/1-4295902158> a organization:Organization .
+                        <https://permid.org/1-4295902158> vcard:organization-name ?organizationName.
+                        <https://permid.org/1-4295902158> organization:hasRegisteredPhoneNumber ?phoneNumber.
+                        <https://permid.org/1-4295902158> organization:isIncorporatedIn ?isIncorporatedIn.
+                        <https://permid.org/1-4295902158> fibo:isDomiciledIn ?location.
+                        <https://permid.org/1-4295902158> organization:hasLEI ?legalEntityNumber.
+                        ?location a <http://www.geonames.org/ontology#Feature> .
+                      }
+                    '
+                    hide-predicates='["<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>"]'
+                    open-links-in-new-window=true
+                    graph-style='[ {
+                                      "selector": "edge[resource = iri(<http://permid.org/ontology/organization/hasLEI>)]",
+                                      "style": {          
+                                        "content": "organization:hasLEI",
+                                        "line-color": "red"
+                                       }
+                                    },
+                                   [[> permid:TutorialGraphStyle ]],
+                                   [[> permid:GraphStyle]] 
+                                 ]'
+    >
+      <semantic-graph-extension-panzoom zoom-only=true></semantic-graph-extension-panzoom>
+      <semantic-graph-layout-cose-bilkent ideal-edge-length="170"></semantic-graph-layout-cose-bilkent>
+    </semantic-graph>
+</bs-panel>
